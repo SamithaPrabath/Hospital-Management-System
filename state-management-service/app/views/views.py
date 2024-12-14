@@ -12,7 +12,7 @@ async def generate_receipt() -> dict[str, str]:
     # get the request data
     data = await request.get_json()
 
-    response = Receipt(
+    response = await Receipt(
         patient_id=data['patient_id'],
         doctor_id=data['doctor_id'],
         issued_by=data['issued_by'],
