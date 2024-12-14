@@ -1,5 +1,6 @@
 import aiomysql
 
+
 class AsyncDBConnection:
     def __init__(self, db_config: dict) -> None:
         """
