@@ -19,4 +19,4 @@ async def generate_receipt() -> dict[str, str]:
         issued_date=data['issued_date'],
         total_amount=data['total_amount']
     )
-    return {'message': 'success'}
+    return response
