@@ -1,5 +1,7 @@
 from quart import request
 
+from app.model.receipt import Receipt
+
 
 async def generate_receipt() -> dict[str, str]:
     """
@@ -10,4 +12,11 @@ async def generate_receipt() -> dict[str, str]:
     # get the request data
     data = await request.get_json()
 
+    response = Receipt(
+        patient_id=data['patient_id'],
+        doctor_id=data['doctor_id'],
+        issued_by=data['issued_by'],
+        issued_date=data['issued_date'],
+        total_amount=data['total_amount']
+    )
     return {'message': 'success'}
