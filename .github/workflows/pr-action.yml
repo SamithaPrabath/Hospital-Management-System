@@ -25,7 +25,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install pipenv
-          pipenv sync --dev
+          pipenv install
 
       - name: Run Flake8 linting
         run: |
