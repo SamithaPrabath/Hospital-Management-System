@@ -5,6 +5,8 @@ name = "pypi"
 
 [packages]
 async-mysql-library = {file = "../sql-library", editable = true}
+quart = "*"
+hypercorn = "*"
 
 [dev-packages]
 
