@@ -1,0 +1,8 @@
+Metadata-Version: 2.1
+Name: async-mysql-library
+Version: 1.0.0
+Summary: An asynchronous MySQL library using aiomysql
+Author: Samitha Prabath
+Author-email: samithaprabath513@gmail
+Requires-Python: >=3.6
+Requires-Dist: aiomysql
