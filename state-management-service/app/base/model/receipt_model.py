@@ -32,17 +32,16 @@ class ReceiptModel:
         random_uuid = uuid.uuid4()
 
         # Convert the UUID to an integer
-        receipt_id =  random_uuid.int % (10**8)
+        receipt_id = random_uuid.int % (10**8)
 
-        query: str = f"""
-            INSERT INTO receipt (receipt_id, patient_id, doctor_id, issued_by, issued_date, total_amount, status_id)
-            VALUES ({receipt_id}, {receipt_data['patient_id']}, {receipt_data['doctor_id']}, {receipt_data['issued_by']}, '{today}', {total_amount}, 1)
-        """
+        query: str = (f"INSERT INTO receipt "
+                      f"(receipt_id, patient_id, doctor_id, issued_by, issued_date, total_amount, status_id)) "
+                      f"VALUES ({receipt_id}, {receipt_data['patient_id']}, {receipt_data['doctor_id']}, "
+                      f"{receipt_data['issued_by']}, '{today}', {total_amount}, 1)")
 
         asyncio.run(self.query_executor.execute(query))
 
         return receipt_id
-
 
     def get_receipt(self, receipt_id: int) -> dict:
         """
