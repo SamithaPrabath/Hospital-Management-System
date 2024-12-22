@@ -57,6 +57,7 @@ def create_staff_blueprint(query_executor):
         except Exception as e:
             return jsonify({"error": str(e)}), 400\
 
+
     @staff_bp.route('/<int:staff_id>/change-password', methods=['PATCH'])
     def change_password(staff_id):
         data = request.json

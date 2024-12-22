@@ -20,7 +20,7 @@ class StaffController:
             return 0
         else:
             hashed_password = hash_password(data['password'])
-            staff_query = f"""
+            staff_query = """
                     INSERT INTO staff (nic, name, password, role_id, address, registerd_by, registerd_date)
                     VALUES (%s, %s, %s, %s, %s, %s, %s);
                     """
@@ -92,7 +92,7 @@ class StaffController:
 
     def update_staff(self, staff_id, data):
         staff_query = """
-            UPDATE staff 
+            UPDATE staff
             SET nic = %s, name = %s, role_id = %s, address = %s, registerd_by = %s, registerd_date = %s
             WHERE staff_id = %s;
         """

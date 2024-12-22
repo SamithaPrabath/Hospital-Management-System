@@ -1,6 +1,7 @@
 import pymysql
 from pymysql.cursors import DictCursor
 
+
 class SyncDBConnection:
     def __init__(self, db_config: dict):
         self.db_config = db_config

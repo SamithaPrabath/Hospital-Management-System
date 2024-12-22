@@ -12,4 +12,6 @@ class Staff:
     @staticmethod
     def from_tuple(data):
         """Create a Staff object from a tuple."""
-        return Staff(staff_id=data['staff_id'], nic=data['nic'], name=data['name'], password=data['password'], role_id=data['role_id'], address=data['address'], registered_by=data['registerd_by'], registered_date=data['registerd_date'])
+        return Staff(staff_id=data['staff_id'], nic=data['nic'], name=data['name'], password=data['password'],
+                     role_id=data['role_id'], address=data['address'], registered_by=data['registerd_by'],
+                     registered_date=data['registerd_date'])
