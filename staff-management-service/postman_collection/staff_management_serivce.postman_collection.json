@@ -12,7 +12,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://127.0.0.1:5001/staff/27",
+					"raw": "http://127.0.0.1:5001/staff/28",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -23,7 +23,7 @@
 					"port": "5001",
 					"path": [
 						"staff",
-						"27"
+						"28"
 					]
 				}
 			},
@@ -36,7 +36,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"nic\":\"9631603289V\",\n    \"name\": \"Isuru\",\n    \"password\": \"Igayan1996\",\n    \"role_id\": 2,\n    \"address\": \"badulla\",\n    \"registered_by\": 11,\n    \"registered_date\": \"2024-12-20\",\n    \"phone_numbers\": [\"1234567890\", \"0987654321\"],\n    \"specialization_id\": 1\n}",
+					"raw": "{\n    \"nic\":\"9631603389V\",\n    \"name\": \"Isuru Gayan\",\n    \"password\": \"Igayan1996\",\n    \"role_id\": 2,\n    \"address\": \"badulla\",\n    \"registered_by\": 11,\n    \"registered_date\": \"2024-12-20\",\n    \"phone_numbers\": [\"1234567890\", \"0987654321\"],\n    \"specialization_id\": 1\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -110,6 +110,71 @@
 					"path": [
 						"staff",
 						"25"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update password",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"current_password\": \"Igayan1996@\",\n    \"new_password\": \"Igayan1996\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5001/staff/28/change-password",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5001",
+					"path": [
+						"staff",
+						"28",
+						"change-password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nic\": \"9631603389V\",\n    \"password\": \"Igayan1996\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5001/staff/login",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5001",
+					"path": [
+						"staff",
+						"login"
 					]
 				}
 			},
