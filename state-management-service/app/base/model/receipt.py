@@ -15,13 +15,13 @@ class Receipt:
 
     def __init__(
             self,
+            receipt_id: int,
             patient_id: int,
             doctor_id: int,
             issued_by: int,
             issued_date: datetime,
             total_amount: float,
-            status: str = 'pending',
-            receipt_id: int | None = None,
+            status: str,
     ) -> None:
         """
         Constructor for Receipt class
@@ -146,3 +146,19 @@ class Receipt:
         :param status: str
         """
         self.__status = status
+
+    def get_receipt_dict(self) -> dict:
+        """
+        Get the receipt data as a dictionary
+
+        :return: dict
+        """
+        return {
+            'receipt_id': self.__id,
+            'patient_id': self.__patient_id,
+            'doctor_id': self.__doctor_id,
+            'issued_by': self.__issued_by,
+            'issued_date': self.__issued_date,
+            'total_amount': self.__total_amount,
+            'status': self.__status
+        }

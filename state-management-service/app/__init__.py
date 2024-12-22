@@ -1,10 +1,13 @@
-from quart import Quart
+from flask import Flask
 
-from app.routes import base_route
+from app.base.routes import base_route
+from app.errors import key_error_handler
 
 
 def create_app():
-    app = Quart(__name__)
+    app = Flask(__name__)
     app.register_blueprint(base_route)
+
+    app.register_error_handler(KeyError, key_error_handler)
 
     return app
