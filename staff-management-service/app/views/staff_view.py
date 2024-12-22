@@ -25,7 +25,7 @@ def create_staff_blueprint(query_executor):
             staff = staff_controller.get_staff_by_id(staff_id)
             if staff:
                 return jsonify({
-                    "id": staff.id,
+                    "staff_id": staff.staff_id,
                     "nic": staff.nic,
                     "name": staff.name,
                     "role_id": staff.role_id,
