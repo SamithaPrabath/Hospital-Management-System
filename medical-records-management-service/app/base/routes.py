@@ -18,6 +18,6 @@ base_route.add_url_rule(
 base_route.add_url_rule(
     rule='/receipt/<int:receipt_id>',
     endpoint='get_receipt',
-    view_func=views.get_receipt_view,
+    view_func=views.get_report_view,
     methods=['GET']
 )

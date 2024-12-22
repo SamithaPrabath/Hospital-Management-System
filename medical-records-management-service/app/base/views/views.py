@@ -1,6 +1,6 @@
 from flask import request
 
-from app.base.controller.report_controller import create_report
+from app.base.controller.report_controller import create_report, get_report
 
 
 def generate_report() -> dict[str, str]:
@@ -16,12 +16,12 @@ def generate_report() -> dict[str, str]:
     return response
 
 
-def get_receipt_view(receipt_id: int) -> dict:
+def get_report_view(receipt_id: int) -> dict:
     """
     This View Function is use for get receipt data
 
     :param receipt_id: int
     :return: dict of receipt data
     """
-    response = get_receipt(receipt_id)
+    response = get_report(receipt_id)
     return response

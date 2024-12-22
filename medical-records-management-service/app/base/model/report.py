@@ -1,7 +1,7 @@
 from datetime import datetime
 
 
-class Receipt:
+class Report:
     """
     Receipt model class
 

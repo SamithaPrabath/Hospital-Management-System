@@ -2,6 +2,7 @@ import asyncio
 import uuid
 from datetime import datetime
 
+from app.base.model.report import Report
 from app.base.utilities import const
 from app.base.utilities.query_executor import AsyncQueryExecutor
 
@@ -31,17 +32,16 @@ class ReportModel:
         random_uuid = uuid.uuid4()
 
         # Convert the UUID to an integer
-        receipt_id =  random_uuid.int % (10**8)
+        report_id = random_uuid.int % (10**8)
 
-        query: str = f"""
-            INSERT INTO receipt (receipt_id, patient_id, doctor_id, issued_by, issued_date, total_amount, status_id)
-            VALUES ({receipt_id}, {report_data['patient_id']}, {report_data['doctor_id']}, {report_data['issued_by']}, '{today}', {total_amount}, 1)
-        """
+        query: str = (f"INSERT INTO receipt "
+                      f"(receipt_id, patient_id, doctor_id, issued_by, issued_date, total_amount, status_id)) "
+                      f"VALUES ({report_id}, {report_data['patient_id']}, {report_data['doctor_id']}, "
+                      f"{report_data['issued_by']}, '{today}', {total_amount}, 1)")
 
         asyncio.run(self.query_executor.execute(query))
 
-        return receipt_id
-
+        return report_id
 
     def get_report(self, receipt_id: int) -> dict:
         """
@@ -55,7 +55,7 @@ class ReportModel:
 
         receipt_data = asyncio.run(self.query_executor.fetch_one(query))
 
-        receipt: Receipt = Receipt(
+        receipt: Report = Report(
             receipt_id=receipt_data[0],
             patient_id=receipt_data[1],
             doctor_id=receipt_data[2],
