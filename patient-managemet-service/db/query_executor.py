@@ -1,5 +1,6 @@
 from db.db_connection import SyncDBConnection
 
+
 class SyncQueryExecutor:
     def __init__(self, db_config):
         self.db_connection = SyncDBConnection(db_config)

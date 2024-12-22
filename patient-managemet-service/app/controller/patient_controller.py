@@ -12,7 +12,7 @@ class PatientController:
         if existing_patient:
             return 0
         else:
-            patient_query = f"""
+            patient_query = """
                     INSERT INTO patient (nic, name, age, address, registerd_by, registerd_date)
                     VALUES (%s, %s, %s, %s, %s, %s);
                     """
@@ -65,7 +65,7 @@ class PatientController:
 
     def update_patient(self, patient_id, data):
         patient_query = """
-            UPDATE patient 
+            UPDATE patient
             SET nic = %s, name = %s, age = %s, address = %s, registerd_by = %s, registerd_date = %s
             WHERE patient_id = %s;
         """

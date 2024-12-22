@@ -11,4 +11,6 @@ class Patient:
     @staticmethod
     def from_tuple(data):
         """Create a Patient object from a tuple."""
-        return Patient(patient_id=data['patient_id'], nic=data['nic'], name=data['name'], age=data['age'], address=data['address'], registered_by=data['registerd_by'], registered_date=data['registerd_date'])
+        return Patient(patient_id=data['patient_id'], nic=data['nic'], name=data['name'], age=data['age'],
+                       address=data['address'], registered_by=data['registerd_by'],
+                       registered_date=data['registerd_date'])
