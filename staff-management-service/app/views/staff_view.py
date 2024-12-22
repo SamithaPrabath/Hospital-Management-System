@@ -55,6 +55,47 @@ def create_staff_blueprint(query_executor):
             staff_controller.update_staff(staff_id, data)
             return jsonify({"message": "Staff updated successfully"}), 200
         except Exception as e:
-            return jsonify({"error": str(e)}), 400
+            return jsonify({"error": str(e)}), 400\
+
+    @staff_bp.route('/<int:staff_id>/change-password', methods=['PATCH'])
+    def change_password(staff_id):
+        data = request.json
+        try:
+            if 'current_password' not in data or 'new_password' not in data:
+                return jsonify({"error": "Both 'current_password' and 'new_password' are required."}), 400
+
+            current_password = data['current_password']
+            new_password = data['new_password']
+
+            result = staff_controller.change_password(staff_id, current_password, new_password)
+
+            if result['success']:
+                return jsonify({"message": result['message']}), 200
+            else:
+                return jsonify({"error": result['message']}), 400
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
+    @staff_bp.route('/login', methods=['POST'])
+    def check_login():
+        data = request.json
+        try:
+            if 'nic' not in data or 'password' not in data:
+                return jsonify({"error": "Both 'nic' and 'password' are required."}), 400
+
+            nic = data['nic']
+            password = data['password']
+
+            result = staff_controller.check_login(nic, password)
+
+            if result['success']:
+                return jsonify({
+                    "message": "Login successful.",
+                    "staff_id": result['staff_id']
+                }), 200
+            else:
+                return jsonify({"error": result['message']}), 400
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
 
     return staff_bp

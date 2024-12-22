@@ -1,6 +1,12 @@
+import bcrypt
 from app.model.doctor_model import Doctor
 from app.model.staff_model import Staff
 from app.model.staff_phone_model import StaffPhoneNumber
+
+
+def hash_password(password):
+    salt = bcrypt.gensalt()
+    return bcrypt.hashpw(password.encode('utf-8'), salt)
 
 
 class StaffController:
@@ -13,6 +19,7 @@ class StaffController:
         if existing_staff:
             return 0
         else:
+            hashed_password = hash_password(data['password'])
             staff_query = f"""
                     INSERT INTO staff (nic, name, password, role_id, address, registerd_by, registerd_date)
                     VALUES (%s, %s, %s, %s, %s, %s, %s);
@@ -20,7 +27,7 @@ class StaffController:
             staff_values = (
                 data['nic'],
                 data['name'],
-                data['password'],
+                hashed_password.decode('utf-8'),
                 data['role_id'],
                 data['address'],
                 data['registered_by'],
@@ -86,13 +93,12 @@ class StaffController:
     def update_staff(self, staff_id, data):
         staff_query = """
             UPDATE staff 
-            SET nic = %s, name = %s, password = %s, role_id = %s, address = %s, registerd_by = %s, registerd_date = %s
+            SET nic = %s, name = %s, role_id = %s, address = %s, registerd_by = %s, registerd_date = %s
             WHERE staff_id = %s;
         """
         staff_values = (
             data['nic'],
             data['name'],
-            data['password'],
             data['role_id'],
             data['address'],
             data['registered_by'],
@@ -120,3 +126,38 @@ class StaffController:
             self.query_executor.execute("DELETE FROM doctor WHERE staff_id = %s;", (staff_id,))
 
         return True
+
+    def change_password(self, staff_id, current_password, new_password):
+        query = "SELECT password FROM staff WHERE staff_id = %s;"
+        staff_data = self.query_executor.fetch_one(query, (staff_id,))
+
+        if not staff_data:
+            return {"success": False, "message": "Staff member not found."}
+
+        stored_hashed_password = staff_data['password']
+
+        if not bcrypt.checkpw(current_password.encode('utf-8'), stored_hashed_password.encode('utf-8')):
+            return {"success": False, "message": "Current password is incorrect."}
+
+        hashed_new_password = hash_password(new_password)
+
+        update_query = "UPDATE staff SET password = %s WHERE staff_id = %s;"
+        self.query_executor.execute(update_query, (hashed_new_password.decode('utf-8'), staff_id))
+
+        return {"success": True, "message": "Password updated successfully."}
+
+    def check_login(self, nic, password):
+        query = "SELECT * FROM staff WHERE nic = %s;"
+        staff_data = self.query_executor.fetch_one(query, (nic,))
+
+        if not staff_data:
+            return {"success": False, "message": "Staff member not found."}
+
+        stored_hashed_password = staff_data['password']
+        if not bcrypt.checkpw(password.encode('utf-8'), stored_hashed_password.encode('utf-8')):
+            return {"success": False, "message": "Incorrect password."}
+
+        return {
+            "success": True,
+            "staff_id": staff_data['staff_id']
+        }
