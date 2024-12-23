@@ -92,7 +92,9 @@ def create_staff_blueprint(query_executor):
             if result['success']:
                 return jsonify({
                     "message": "Login successful.",
-                    "staff_id": result['staff_id']
+                    "staff_id": result['staff_id'],
+                    "name": result['name'],
+                    "role_id": result['role_id']
                 }), 200
             else:
                 return jsonify({"error": result['message']}), 400
