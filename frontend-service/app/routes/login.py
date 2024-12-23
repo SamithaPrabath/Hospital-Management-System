@@ -3,9 +3,11 @@ from app.views.views import validate_user_with_patient_service
 
 login = Blueprint('login', __name__)
 
+
 @login.route('/')
 def index():
     return render_template('login.html')
+
 
 @login.route('/validate-login', methods=['POST'])
 def validate_login():

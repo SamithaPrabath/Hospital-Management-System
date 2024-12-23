@@ -1,5 +1,6 @@
 import requests
 
+
 def validate_user_with_patient_service(nic, password):
     try:
         response = requests.post(
