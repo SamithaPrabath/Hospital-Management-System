@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, jsonify, session
+from flask import Blueprint, render_template, request, jsonify, session, redirect, url_for
 from app.views.views import validate_user_with_patient_service
 
 login = Blueprint('login', __name__)
@@ -27,3 +27,9 @@ def validate_login():
         return jsonify({"success": True})
     else:
         return jsonify({"success": False, "error": result["error"]}), 401
+
+
+@login.route('/logout', methods=['GET'])
+def logout():
+    session.clear()
+    return redirect(url_for('login.index'))
