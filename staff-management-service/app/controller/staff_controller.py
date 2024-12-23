@@ -159,6 +159,7 @@ class StaffController:
 
         return {
             "success": True,
+            "is_authenticated": True,
             "staff_id": staff_data['staff_id'],
             "name": staff_data['name'],
             "role_id": staff_data['role_id']
