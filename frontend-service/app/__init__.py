@@ -1,6 +1,7 @@
 from flask import Flask
 from app.routes.login import login
 from app.routes.dashboard import dashboard
+from app.routes.payment import payment
 
 
 def create_app():
@@ -8,5 +9,6 @@ def create_app():
 
     app.register_blueprint(login, url_prefix='/')
     app.register_blueprint(dashboard, url_prefix='/dashboard')
+    app.register_blueprint(payment, url_prefix='/payment')
 
     return app
