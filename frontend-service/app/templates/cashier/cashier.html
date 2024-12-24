@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="wrapper">
+    <!-- Main content -->
+    <div class="content">
+        <h3 class="text-center mb-4">Welcome to the Radiologist Dashboard</h3>
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Radiologist Responsibilities</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group">
+                            <li class="list-group-item"><i class="fa fa-check-circle text-success"></i> Create LAB Reports</li>
+                            <li class="list-group-item"><i class="fa fa-check-circle text-success"></i> Print LAB reports</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <!-- Main Content -->
+            <div class="col-md-9 p-4">
+                <!-- Buttons Section -->
+                <div class="d-flex flex-wrap justify-content-start">
+                    <a href="{{ url_for('radiologist.go_to_make_appointment') }}" class="btn btn-primary m-2"><i class="fa fa-plus"></i> Check receipt Status</a>
+                    <a href="{{ url_for('radiologist.view_appointments') }}" class="btn btn-primary m-2"><i class="fa fa-eye"></i> Make Payment</a>
+                    <a href="{{ url_for('radiologist.staff_register') }}" class="btn btn-primary m-2"><i class="fa fa-plus"></i> Print Payment Report</a>
+                </div>
+            </div>
+        </div>
+        <!-- Footer -->
+        <div class="bg-dark text-white footer" style="margin-bottom: 20px;">
+            <div class="col text-center">
+                <p>&copy; 2024 ABC Hospital. All Rights Reserved.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
