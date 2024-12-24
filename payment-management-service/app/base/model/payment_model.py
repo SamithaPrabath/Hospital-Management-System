@@ -20,49 +20,45 @@ class PaymentModel:
         self.db_config = DB_CONFIG
         self.query_executor = AsyncQueryExecutor(DB_CONFIG)
 
-    def create_payment(self, report_data: dict) -> int:
+    def make_payment(self, payment_data: dict) -> int:
         """
-        Create a new report in the database.
-        :param receipt_data:
-        :return:
+        Make payment for a receipt
+
+        :param payment_data: dict
         """
         today: datetime = datetime.now()
-        total_amount: float = const.FIXED_AMOUNT
         # Generate a random UUID
         random_uuid = uuid.uuid4()
 
         # Convert the UUID to an integer
-        report_id = random_uuid.int % (10**8)
+        payment_id = random_uuid.int % (10**8)
 
-        query: str = (f"INSERT INTO receipt "
-                      f"(receipt_id, patient_id, doctor_id, issued_by, issued_date, total_amount, status_id)) "
-                      f"VALUES ({report_id}, {report_data['patient_id']}, {report_data['doctor_id']}, "
-                      f"{report_data['issued_by']}, '{today}', {total_amount}, 1)")
+        query: str = (f"INSERT INTO payment "
+                      f"(payment_id, receipt_id, collected_by, collected_date) "
+                      f"VALUES ({payment_id}, {payment_data['receipt_id']}, {payment_data['collected_by']}, "
+                      f"'{today}')")
 
         asyncio.run(self.query_executor.execute(query))
 
-        return report_id
+        return payment_id
 
-    def get_payment(self, receipt_id: int) -> dict:
+    def get_payment(self, payment_id: int) -> dict:
         """
-        Get receipt data from the database.
-        :param receipt_id:
+        Get payment data from the database.
+        :param payment_id:
         :return:
         """
-        query: str = f"""
-            SELECT * FROM receipt WHERE receipt_id = {receipt_id}
-        """
+        query: str = f"SELECT * FROM payment WHERE payment_id = {payment_id}"
 
-        receipt_data = asyncio.run(self.query_executor.fetch_one(query))
+        payment_data = asyncio.run(self.query_executor.fetch_one(query))
 
-        receipt: Payment = Payment(
-            receipt_id=receipt_data[0],
-            patient_id=receipt_data[1],
-            doctor_id=receipt_data[2],
-            issued_by=receipt_data[3],
-            issued_date=receipt_data[4],
-            total_amount=receipt_data[5],
-            status=receipt_data[6]
+        if not payment_data:
+            return {}
+        payment: Payment = Payment(
+            payment_id=payment_data[0],
+            receipt_id=payment_data[1],
+            collected_by=payment_data[2],
+            collected_date=payment_data[3]
         )
 
-        return receipt.get_receipt_dict()
+        return payment.get_payment_dict()

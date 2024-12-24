@@ -9,15 +9,15 @@ base_route = Blueprint(name='base', import_name=__name__)
 # create a receipt
 base_route.add_url_rule(
     rule='/payment',
-    endpoint='create_receipt',
-    view_func=views.generate_payment,
+    endpoint='create_payment',
+    view_func=views.make_payment_view,
     methods=['POST']
 )
 
 # get a receipt
 base_route.add_url_rule(
-    rule='/payment/<int:receipt_id>',
-    endpoint='get_receipt',
+    rule='/payment/<int:payment_id>',
+    endpoint='get_payment',
     view_func=views.get_payment_view,
     methods=['GET']
 )

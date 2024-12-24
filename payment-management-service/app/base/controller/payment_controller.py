@@ -1,31 +1,31 @@
 from app.base.model.payment_model import PaymentModel
 
 
-def create_payment(receipt_data: dict) -> dict:
+def make_payment(payment_data: dict) -> dict:
     """
-    This function is use for create receipt for a patient/appointment
+    This function is use for make payment for a receipt
 
-    :param receipt_data: dict of receipt data
+    :param payment_data: dict of payment data
     :return: dict of message
     """
 
-    report_model: PaymentModel = PaymentModel()
+    payment_model: PaymentModel = PaymentModel()
 
-    receipt_id: int = report_model.create_payment(receipt_data)
+    payment_id: int = payment_model.make_payment(payment_data)
 
-    return {'message': "Receipt created successfully", 'id': receipt_id}
+    return {'message': "Paid successfully", 'id': payment_id}
 
 
-def get_payment(receipt_id: int) -> dict:
+def get_payment(payment_id: int) -> dict:
     """
-    This function is use for get receipt data
+    This function is use for get payment data
 
-    :param receipt_id: int
-    :return: dict of receipt data
+    :param payment_id: int
+    :return: dict of payment data
     """
 
-    receipt_model: PaymentModel = PaymentModel()
+    payment_model: PaymentModel = PaymentModel()
 
-    receipt_data: dict = receipt_model.get_payment(receipt_id)
+    payment_data: dict = payment_model.get_payment(payment_id)
 
-    return receipt_data
+    return payment_data
