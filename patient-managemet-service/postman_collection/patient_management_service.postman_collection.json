@@ -1,0 +1,119 @@
+{
+	"info": {
+		"_postman_id": "d85d34e4-eea6-4872-9aa4-b12a719a3863",
+		"name": "patient_management_service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22838955"
+	},
+	"item": [
+		{
+			"name": "Get patient",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5002/patient/4",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5002",
+					"path": [
+						"patient",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create patient",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nic\":\"9631603281V\",\n    \"name\": \"Isuru\",\n    \"age\": 29,\n    \"address\": \"badulla\",\n    \"registered_by\": 2,\n    \"registered_date\": \"2024-12-20\",\n    \"phone_numbers\": [\"1234567890\", \"0987654321\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5002/patient",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5002",
+					"path": [
+						"patient"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete patient",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5002/patient/3",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5002",
+					"path": [
+						"patient",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update patient",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nic\":\"9631603289V\",\n    \"name\": \"Isuru Gayan\",\n    \"age\": 28,\n    \"address\": \"badulla\",\n    \"registered_by\": 2,\n    \"registered_date\": \"2024-12-20\",\n    \"phone_numbers\": [\"1234567890\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5002/patient/4",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5002",
+					"path": [
+						"patient",
+						"4"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
