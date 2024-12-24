@@ -11,6 +11,7 @@ def index():
 
     return render_template('payment-index.html', staff_name=staff_name)
 
+
 @payment.route('/pay')
 def go_to_pay_page():
     staff_name = session.get('name')
