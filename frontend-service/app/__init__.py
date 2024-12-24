@@ -12,5 +12,4 @@ def create_app():
     app.register_blueprint(dashboard, url_prefix='/dashboard')
     app.register_blueprint(receipt, url_prefix='/receipt')
 
-
     return app
