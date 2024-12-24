@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="content">
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <h4 class="page-title">Add Appointment</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <form>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Patient NIC</label>
+                            <input id="patient_id" class="form-control" type="text">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Doctor Specialization</label>
+                            <select class="select" id="specialization_id">
+                                <option>Select</option>
+                                <option>Dentists</option>
+                                <option>Neurology</option>
+                                <option>Opthalmology</option>
+                                <option>Orthopedics</option>
+                                <option>Cancer Department</option>
+                                <option>ENT Department</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Doctor Name</label>
+                            <select class="select">
+                                <option>Select</option>
+                                <option>Cristina Groves</option>
+                                <option>Marie Wells</option>
+                                <option>Henry Daniels</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea cols="30" rows="4" class="form-control"></textarea>
+                </div>
+                <div class="m-t-20 text-center">
+                    <button class="btn btn-primary submit-btn">Create Appointment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
