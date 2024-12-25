@@ -1,7 +1,12 @@
 from flask import Flask
+
+from app.routes.cashier import cashier
+from app.routes.doctor import doctor
 from app.routes.login import login
 from app.routes.dashboard import dashboard
 from app.routes.report import report
+from app.routes.radiologist import radiologist
+from app.routes.receptionist import receptionist
 
 
 def create_app():
@@ -9,6 +14,10 @@ def create_app():
 
     app.register_blueprint(login, url_prefix='/')
     app.register_blueprint(dashboard, url_prefix='/dashboard')
+    app.register_blueprint(receptionist, url_prefix='/receptionist')
+    app.register_blueprint(doctor, url_prefix='/doctor')
+    app.register_blueprint(radiologist, url_prefix='/radiologist')
+    app.register_blueprint(cashier, url_prefix='/cashier')
     app.register_blueprint(report, url_prefix='/report')
 
     return app
