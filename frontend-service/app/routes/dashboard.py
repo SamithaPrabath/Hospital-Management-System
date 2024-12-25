@@ -14,4 +14,22 @@ def index():
 @dashboard.route('/doctor')
 def go_to_doctor_page():
     staff_name = session.get('name')
-    return render_template('doctors.html', staff_name=staff_name)
+    return render_template('doctor.html', staff_name=staff_name)
+
+
+@dashboard.route('/receptionist')
+def go_to_receptionist_page():
+    staff_name = session.get('name')
+    return render_template('receptionist/doctor.html', staff_name=staff_name)
+
+
+@dashboard.route('/radiologist')
+def go_to_radiologist_page():
+    staff_name = session.get('name')
+    return render_template('radiologist.html', staff_name=staff_name)
+
+
+@dashboard.route('/cashier')
+def go_to_cashier_page():
+    staff_name = session.get('name')
+    return render_template('cashier.html', staff_name=staff_name)
