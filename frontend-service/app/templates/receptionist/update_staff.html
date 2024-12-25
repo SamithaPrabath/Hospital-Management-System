@@ -11,16 +11,38 @@
         <div class="col-lg-8 offset-lg-2">
             <form id="staffForm">
                 <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Staff ID <span class="text-danger">*</span></label>
+                            <input class="form-control"
+                                   type="text"
+                                   id="staff_id"
+                                   name="staff_id"
+                                   value="{{ staff['staff_id'] }}"
+                                   disabled
+                            >
+                        </div>
+                    </div>
                     <div class="col-sm-12">
                         <div class="form-group">
                             <label>Full Name <span class="text-danger">*</span></label>
-                            <input class="form-control" type="text" id="name" name="name" required>
+                            <input class="form-control"
+                                   type="text"
+                                   id="name"
+                                   name="name"
+                                   value="{{ staff['name'] }}"
+                                   required>
                         </div>
                     </div>
                     <div class="col-sm-12">
                         <div class="form-group">
                             <label>NIC <span class="text-danger">*</span></label>
-                            <input class="form-control" type="text" id="nic" name="nic" required>
+                            <input class="form-control"
+                                   type="text"
+                                   id="nic"
+                                   name="nic"
+                                   value="{{ staff['nic'] }}"
+                                   required>
                         </div>
                     </div>
                     <div class="col-sm-6">
@@ -28,7 +50,10 @@
                             <label>Role</label>
                             <select class="form-control select" id="roleSelect" name="role_id" required>
                                 {% for role in staff_roles %}
-                                    <option value="{{ role.role_id }}">{{ role.role_name }}</option>
+                                    <option value="{{ role.role_id }}"
+                                            {% if role.role_id == staff.role_id %}selected{% endif %}>
+                                        {{ role.role_name }}
+                                    </option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -36,10 +61,14 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label>Specialization</label>
-                            <select class="form-control select" id="specializationSelect" name="specialization_id" disabled>
-                                <option value="" selected>Select Specialization</option>
+                            <select class="form-control select" id="specializationSelect" name="specialization_id"
+                                    {% if staff.role_id != 1 %}disabled{% endif %}>
+                                <option value="" {% if not staff.specialization_id %}selected{% endif %}>Select Specialization</option>
                                 {% for doctor_specialization in doctor_specializations %}
-                                    <option value="{{ doctor_specialization.specialization_id }}">{{ doctor_specialization.type }}</option>
+                                    <option value="{{ doctor_specialization.specialization_id }}"
+                                            {% if doctor_specialization.specialization_id == staff.specialization_id %}selected{% endif %}>
+                                        {{ doctor_specialization.type }}
+                                    </option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -47,46 +76,44 @@
                     <div class="col-sm-12">
                         <div class="form-group">
                             <label>Address <span class="text-danger">*</span></label>
-                            <input class="form-control" type="text" id="address" name="address" required>
+                            <input class="form-control"
+                                   type="text"
+                                   id="address"
+                                   name="address"
+                                   value="{{ staff['address'] }}"
+                                   required>
                         </div>
                     </div>
-                    <div class="col-sm-6">
+                                        <div class="col-sm-6">
                         <div class="form-group">
                             <label>Phone number 1</label>
-                            <input class="form-control" type="text" id="phone_number_1" name="phone_number_1">
+                            <input class="form-control" type="text" id="phone_number_1" name="phone_number_1" value="{{ staff['phone_numbers'][0] if staff['phone_numbers']|length > 0 else '' }}">
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label>Phone number 2</label>
-                            <input class="form-control" type="text" id="phone_number_2" name="phone_number_2">
+                            <input class="form-control" type="text" id="phone_number_2" name="phone_number_2" value="{{ staff['phone_numbers'][1] if staff['phone_numbers']|length > 1 else '' }}">
                         </div>
                     </div>
                     <div class="col-sm-12">
                         <div class="form-group">
                             <label>Registered By <span class="text-danger">*</span></label>
-                            <input class="form-control" type="text" id="registered_by" name="registered_by" required value ="{{ staff_id }}" disabled>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label>Password <span class="text-danger">*</span></label>
-                            <input class="form-control" type="password" id="password" name="password" required>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label>Confirm Password <span class="text-danger">*</span></label>
-                            <input class="form-control" type="password" id="confirm_password" name="confirm_password" required>
+                            <input class="form-control"
+                                   type="text"
+                                   id="registered_by"
+                                   name="registered_by"
+                                   value="{{ staff['registered_by'] }}"
+                                   readonly>
                         </div>
                     </div>
                 </div>
                 <div id="error-message" class="text-danger" style="display: none;"></div>
                 <div class="m-t-20 text-center">
-                    <button type="button" id="submitBtn" class="btn btn-primary submit-btn">Create Staff</button>
-                </div>
-            </form>
+            <button type="button" id="submitBtn" class="btn btn-primary submit-btn">Update Staff</button>
         </div>
+    </form>
+</div>
     </div>
 </div>
 <script>
@@ -110,5 +137,5 @@
         });
     });
 </script>
-<script src="{{ url_for('static', filename='assets/js/ajax/staff_registration_ajax.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/js/ajax/staff_update_ajax.js') }}"></script>
 {% endblock %}
