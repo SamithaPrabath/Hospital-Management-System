@@ -19,8 +19,12 @@ class SyncDBConnection:
 
     def get_connection(self):
         """Get a connection."""
+
         if not self.connection:
-            raise Exception("Connection not initialized.")
+            try:
+                self.init_connection()
+            except Exception as e:
+                raise Exception(e)
         return self.connection
 
     def close_connection(self):
