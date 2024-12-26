@@ -1,8 +1,10 @@
+from crypt import methods
 from datetime import datetime
 
 from flask import Blueprint, render_template, request, jsonify, session, redirect, url_for
 
 from app.routes.doctor import doctor
+from app.views.receptionist.receptionist import create_receipt
 from app.views.views import get_all_staff_roles, get_doctor_specializations, save_staff, get_all_staff, \
     delete_staff_member, get_staff_by_id, update_staff_by_id, save_patient, get_all_patients, delete_patient_member, \
     get_patient_by_id, update_patient_by_id
@@ -15,7 +17,7 @@ def index():
     staff_name = session.get('name')
     if not staff_name:
         return redirect(url_for('login.index'))
-    return render_template('index.html', staff_name=staff_name)
+    return render_template('receptionist/receptionist.html', staff_name=staff_name)
 
 
 @receptionist.route('/make_appointment')
@@ -45,26 +47,31 @@ def go_to_make_appointment():
     )
 
 
-@receptionist.route('/submit_appointment')
+@receptionist.route('/submit_appointment', methods=['POST'])
 def submit_appointment():
     staff_name = session.get('name')
     staff_id = session.get('staff_id')
 
+    patient_nic = request.form.get('nic')
+    doctor_id = int(request.form.get('doctor'))
+
+    response = create_receipt(patient_nic, doctor_id, staff_id)
+
     if not staff_name:
         return redirect(url_for('login.index'))
     return render_template(
-        'receptionist/make_appointment.html',
+        'receptionist/appointments.html',
         staff_name=staff_name,
         staff_id=staff_id,
     )
 
 
-@receptionist.route('/')
+@receptionist.route('/appointments')
 def view_appointments():
     staff_name = session.get('name')
     if not staff_name:
         return redirect(url_for('login.index'))
-    return render_template('make_appointment.html', staff_name=staff_name)
+    return render_template('receptionist/appointments.html', staff_name=staff_name)
 
 
 @receptionist.route('/staff-registration')

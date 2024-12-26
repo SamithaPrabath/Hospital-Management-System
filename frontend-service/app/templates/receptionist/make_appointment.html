@@ -9,7 +9,7 @@
     </div>
     <div class="row">
         <div class="col-lg-8 offset-lg-2">
-            <form action="{{ url_for('') }}">
+            <form action="{{ url_for('receptionist.submit_appointment') }}" method="POST">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -31,12 +31,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label>Description</label>
-                    <textarea cols="30" rows="4" class="form-control" name="description"></textarea>
-                </div>
                 <div class="m-t-20 text-center">
-                    <button type="submit" class="btn btn-primary submit-btn">Create Appointment</button>
+                    <button type="submit" class="btn btn-primary submit-btn">Make Appointment</button>
                 </div>
             </form>
         </div>
