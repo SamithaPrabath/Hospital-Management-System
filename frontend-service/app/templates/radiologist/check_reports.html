@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="content">
+    <div class="row">
+        <div class="col-sm-4 col-3">
+            <h4 class="page-title">Receipt Reports Details</h4>
+        </div>
+    </div>
+    <div class="row filter-row">
+        <form action="{{ url_for('radiologist.filter_reports') }}" method="POST" class="w-100">
+            <div class="row">
+                <!-- Receipt ID Field -->
+                <div class="col-6 mb-3">
+                    <div class="form-group">
+                        <input
+                            type="text"
+                            id="receipt_id"
+                            name="receipt_id"
+                            class="form-control form-control-lg"
+                            placeholder="Enter Receipt ID"
+                            required
+                        >
+                    </div>
+                </div>
+
+                <!-- Search Button -->
+                <div class="col-6">
+                    <button type="submit" class="btn btn-success btn-lg btn-block">Search</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="row">
+        {% if receipt_id %}
+            <h4>Receipt ID : {{ receipt_id }}</h4>
+        {% endif %}
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-border table-striped custom-table datatable mb-0">
+                    <thead>
+                        <tr>
+                            <th>Report Type</th>
+                            <th>Status</th>
+                            <th class="text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for details in report_details %}
+                        <tr>
+                            <td>{{ details['report_type'] }}</td>
+                            <td>{{ details['status'] }}</td>
+                            <td>
+                                {% if details['status'] == 'Pending' %}
+                                <div class="col-sm-8 col-9 text-right m-b-20">
+                                    <a href="{{ url_for('radiologist.go_to_upload_report', receipt_id=receipt_id, report_id=details['report_id']) }}" class="btn btn btn-primary btn-rounded float-right">
+                                        <i class="fa fa-plus"></i> Upload Report
+                                    </a>
+                                </div>
+                                {% else %}
+                                <div class="col-sm-8 col-9 text-right m-b-20">
+                                    <a href="{{ url_for('radiologist.go_to_upload_report', receipt_id=receipt_id, report_id=details['report_id']) }}" class="btn btn btn-danger btn-rounded float-right">
+                                        <i class="fa fa-minus"></i> Delete Report
+                                    </a>
+                                </div>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

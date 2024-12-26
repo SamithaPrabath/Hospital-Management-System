@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="content">
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <h4 class="page-title">Upload Medical Report</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <form action="{{ url_for('radiologist.go_to_upload_report') }}">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Patient NIC</label>
+                            <input id="patient_id" class="form-control" type="text" name="nic">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Doctor</label>
+                            <select  class="form-control custom-select" id="doctor" name="doctor" >
+                                <option value="0" selected>Please Select</option>
+                                <option value="" name="doctor">Doctor</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea cols="30" rows="4" class="form-control" name="description"></textarea>
+                </div>
+                <div class="m-t-20 text-center">
+                    <button type="submit" class="btn btn-primary submit-btn">Create Appointment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -66,3 +66,5 @@ class ReportModel:
         )
 
         return receipt.get_receipt_dict()
+
+

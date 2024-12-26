@@ -1,27 +1,13 @@
-from flask import request
 
-from app.base.controller.report_controller import create_report, get_report
+from app.base.controller import receipt_report_controller
 
 
-def generate_report() -> dict[str, str]:
+def get_receipt_report_view(receipt_id: int) -> list:
     """
-    This View Function is use for generate receipt for a patient/appointment
-
-    :return: dict of message
-    """
-    # get the request data
-    data: dict = request.get_json()
-
-    response = create_report(data)
-    return response
-
-
-def get_report_view(receipt_id: int) -> dict:
-    """
-    This View Function is use for get receipt data
+    This View Function is use for get receipt report data
 
     :param receipt_id: int
-    :return: dict of receipt data
+    :return: dict of receipt report data
     """
-    response = get_report(receipt_id)
+    response: list = receipt_report_controller.get_receipt_report(receipt_id)
     return response

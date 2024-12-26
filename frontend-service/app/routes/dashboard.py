@@ -6,9 +6,17 @@ dashboard = Blueprint('dashboard', __name__)
 @dashboard.route('/')
 def index():
     staff_name = session.get('name')
-    if not staff_name:
+    role_id = session.get('role_id')
+    if not staff_name or not role_id:
         return redirect(url_for('login.index'))
-    return render_template('index.html', staff_name=staff_name)
+
+    if session['role_id'] == 1:
+        return redirect(url_for('dashboard.go_to_receptionist_page'))
+    elif session['role_id'] == 2:
+        return redirect(url_for('dashboard.doctor'))
+    elif session['role_id'] == 3:
+        return redirect(url_for('dashboard.go_to_radiologist_page'))
+    return redirect(url_for('dashboard.cashier'))
 
 
 @dashboard.route('/doctor')
@@ -26,7 +34,7 @@ def go_to_receptionist_page():
 @dashboard.route('/radiologist')
 def go_to_radiologist_page():
     staff_name = session.get('name')
-    return render_template('radiologist.html', staff_name=staff_name)
+    return render_template('radiologist/radiologist.html', staff_name=staff_name)
 
 
 @dashboard.route('/cashier')
