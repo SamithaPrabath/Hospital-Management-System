@@ -87,3 +87,23 @@ class PatientController:
                 self.query_executor.execute(phone_query, (patient_id, phone_number))
 
         return True
+
+    def get_all_patients(self):
+        query = "SELECT patient_id, name, nic, age, address, registerd_by, registerd_date FROM patient;"
+        all_patients = self.query_executor.fetch_all(query)
+
+        if all_patients:
+            return [
+                {
+                    "patient_id": patient["patient_id"],
+                    "name": patient["name"],
+                    "nic": patient["nic"],
+                    "age": patient["age"],
+                    "address": patient["address"],
+                    "registered_by": patient["registerd_by"],
+                    "registered_date": patient["registerd_date"]
+                }
+                for patient in all_patients
+            ]
+        else:
+            return []
