@@ -56,4 +56,15 @@ def create_patient_blueprint(query_executor):
         except Exception as e:
             return jsonify({"error": str(e)}), 400
 
+    @patient_bp.route('/patient-list', methods=['GET'])
+    def get_all_patients():
+        try:
+            patient_list = patient_controller.get_all_patients()
+            if patient_list:
+                return jsonify(patient_list), 200
+            else:
+                return jsonify({"message": "No patient found"}), 404
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
     return patient_bp

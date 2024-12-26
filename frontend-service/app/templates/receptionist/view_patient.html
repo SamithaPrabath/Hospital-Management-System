@@ -4,11 +4,11 @@
 <div class="content">
     <div class="row">
         <div class="col-sm-4 col-3">
-            <h4 class="page-title">Staff members</h4>
+            <h4 class="page-title">Patients</h4>
         </div>
         <div class="col-sm-8 col-9 text-right m-b-20">
-            <a href="{{ url_for('receptionist.staff_register') }}"
-               class="btn btn btn-primary btn-rounded float-right"><i class="fa fa-plus"></i> Create Staff</a>
+            <a href="{{ url_for('receptionist.patient_register') }}"
+               class="btn btn btn-primary btn-rounded float-right"><i class="fa fa-plus"></i> Create Patient</a>
         </div>
     </div>
     <div class="row filter-row">
@@ -29,34 +29,34 @@
                 <table class="table table-border table-striped custom-table datatable mb-0">
                     <thead>
                     <tr>
-                        <th>Staff ID</th>
+                        <th>Patient ID</th>
                         <th>Name</th>
                         <th>NIC</th>
-                        <th>Role</th>
+                        <th>Age</th>
                         <th>Address</th>
                         <th>Registered By</th>
                         <th>Registered Date</th>
                         <th class="text-center">Action</th>
                     </tr>
                     </thead>
-                    <tbody id="staffTableBody">
-                    {% for staff in staff_list %}
+                    <tbody id="patientTableBody">
+                    {% for patient in patient_list %}
                     <tr>
-                        <td>{{ staff['staff_id'] }}</td>
-                        <td>{{ staff['name'] }}</td>
-                        <td>{{ staff['nic'] }}</td>
-                        <td>{{ staff['role_id'] }}</td>
-                        <td>{{ staff['address'] }}</td>
-                        <td>{{ staff['registered_by'] }}</td>
-                        <td>{{ staff['registered_date'] }}</td>
+                        <td>{{ patient['patient_id'] }}</td>
+                        <td>{{ patient['name'] }}</td>
+                        <td>{{ patient['nic'] }}</td>
+                        <td>{{ patient['age'] }}</td>
+                        <td>{{ patient['address'] }}</td>
+                        <td>{{ patient['registered_by'] }}</td>
+                        <td>{{ patient['registered_date'] }}</td>
                         <td>
                             <div class="col-sm-10 col-9 text-right m-b-20">
-                                <a href="{{ url_for('receptionist.go_to_update_staff', staff_id=staff['staff_id']) }}"
+                                <a href="{{ url_for('receptionist.go_to_update_patient', patient_id=patient['patient_id']) }}"
                                    class="btn btn btn-primary btn-rounded float-right"><i class="fa fa-plus"></i> Update</a>
                             </div>
                             <div class="col-sm-10 col-9 text-right m-b-20">
                                 <button class="btn btn btn-danger btn-rounded float-right delete-btn"
-                                        data-id="{{ staff['staff_id'] }}">
+                                        data-id="{{ patient['patient_id'] }}">
                                     <i class="fa fa-minus"></i> Delete
                                 </button>
                             </div>
@@ -73,11 +73,11 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const nicSearch = document.getElementById('nicSearch');
-        const staffTableBody = document.getElementById('staffTableBody');
+        const patientTableBody = document.getElementById('patientTableBody');
 
         nicSearch.addEventListener('input', function () {
             const searchValue = nicSearch.value.toLowerCase();
-            const rows = staffTableBody.querySelectorAll('tr');
+            const rows = patientTableBody.querySelectorAll('tr');
 
             rows.forEach(row => {
                 const nicCell = row.cells[2]; // NIC is in the third column
@@ -96,9 +96,9 @@
 <script>
     document.querySelectorAll('.delete-btn').forEach(button => {
     button.addEventListener('click', function () {
-        const staffId = this.getAttribute('data-id');
+        const patientId = this.getAttribute('data-id');
 
-        fetch(`/receptionist/${staffId}`, {
+        fetch(`/receptionist/patient-delete/${patientId}`, {
             method: 'DELETE',
         })
         .then(response => response.json())
