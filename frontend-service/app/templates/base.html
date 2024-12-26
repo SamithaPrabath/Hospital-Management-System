@@ -32,9 +32,7 @@
 						<span>{{ staff_name }}</span>
                     </a>
 					<div class="dropdown-menu">
-						<a class="dropdown-item" href="profile.html">My Profile</a>
-						<a class="dropdown-item" href="edit-profile.html">Edit Profile</a>
-						<a class="dropdown-item" href="settings.html">Settings</a>
+						<a class="dropdown-item" href="{{ url_for('dashboard.go_to_password_change_page') }}">Change Password</a>
 						<a class="dropdown-item" href="{{ url_for('login.logout') }}">Logout</a>
 					</div>
                 </li>

@@ -164,3 +164,42 @@ class StaffController:
             "name": staff_data['name'],
             "role_id": staff_data['role_id']
         }
+
+    def get_all_roles(self):
+        query = "SELECT role_id, name FROM role;"
+        roles = self.query_executor.fetch_all(query)
+
+        if roles:
+            return [{"role_id": role["role_id"], "role_name": role["name"]} for role in roles]
+        else:
+            return []
+
+    def get_all_doctor_specializations(self):
+        query = "SELECT specialization_id, type, description FROM doctor_specialization;"
+        doctor_specialization_list = self.query_executor.fetch_all(query)
+
+        if doctor_specialization_list:
+            return [{"specialization_id": doctor_specialization["specialization_id"], "type": doctor_specialization["type"],
+                     "description": doctor_specialization["description"]} for doctor_specialization in doctor_specialization_list]
+        else:
+            return []
+
+    def get_all_staff(self):
+        query = "SELECT staff_id, name, nic, role_id, address, registerd_by, registerd_date FROM staff;"
+        all_staff = self.query_executor.fetch_all(query)
+
+        if all_staff:
+            return [
+                {
+                    "staff_id": staff["staff_id"],
+                    "name": staff["name"],
+                    "nic": staff["nic"],
+                    "role_id": staff["role_id"],
+                    "address": staff["address"],
+                    "registered_by": staff["registerd_by"],
+                    "registered_date": staff["registerd_date"]
+                }
+                for staff in all_staff
+            ]
+        else:
+            return []

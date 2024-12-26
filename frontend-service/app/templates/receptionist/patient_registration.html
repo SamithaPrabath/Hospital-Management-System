@@ -1,10 +1,66 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block content %}
+<div class="content">
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <h4 class="page-title">Add Patient</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <form id="patientForm">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label>Full Name <span class="text-danger">*</span></label>
+                            <input class="form-control" type="text" id="name" name="name" required>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>NIC <span class="text-danger">*</span></label>
+                            <input class="form-control" type="text" id="nic" name="nic" required>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Age <span class="text-danger">*</span></label>
+                            <input class="form-control" type="text" id="age" name="age" required>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label>Address <span class="text-danger">*</span></label>
+                            <input class="form-control" type="text" id="address" name="address" required>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Phone number 1</label>
+                            <input class="form-control" type="text" id="phone_number_1" name="phone_number_1">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Phone number 2</label>
+                            <input class="form-control" type="text" id="phone_number_2" name="phone_number_2">
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label>Registered By <span class="text-danger">*</span></label>
+                            <input class="form-control" type="text" id="registered_by" name="registered_by" required value ="{{ staff_id }}" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div id="error-message" class="text-danger" style="display: none;"></div>
+                <div class="m-t-20 text-center">
+                    <button type="button" id="submitBtn" class="btn btn-primary submit-btn">Create Patient</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='assets/js/ajax/patient_registration_ajax.js') }}"></script>
+{% endblock %}
