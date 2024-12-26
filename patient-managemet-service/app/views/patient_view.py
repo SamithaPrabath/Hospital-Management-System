@@ -39,6 +39,26 @@ def create_patient_blueprint(query_executor):
         except Exception as e:
             return jsonify({"error": str(e)}), 500
 
+    @patient_bp.route('/get-patient-by-nic/<string:nic>', methods=['GET'])
+    def get_patient_by_nic(nic):
+        try:
+            patient = patient_controller.get_patient_by_nic(nic)
+            if patient:
+                return jsonify({
+                    "patient_id": patient.patient_id,
+                    "nic": patient.nic,
+                    "name": patient.name,
+                    "age": patient.age,
+                    "address": patient.address,
+                    "registered_by": patient.registered_by,
+                    "registered_date": patient.registered_date,
+                    "phone_numbers": patient.phone_numbers,
+                }), 200
+            else:
+                return jsonify({"error": "Patient not found"}), 404
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
     @patient_bp.route('/<int:patient_id>', methods=['DELETE'])
     def delete_patient(patient_id):
         try:

@@ -58,6 +58,29 @@ class PatientController:
 
         return patient
 
+    def get_patient_by_nic(self, nic):
+        patient_query = "SELECT * FROM patient WHERE nic = %s;"
+        patient_data = self.query_executor.fetch_one(patient_query, (nic,))
+        if not patient_data:
+            return None
+
+        patient = Patient.from_tuple(patient_data)
+
+        phone_query = "SELECT * FROM patient_phone WHERE patient_id = %s;"
+        phone_data = self.query_executor.fetch_all(phone_query, (patient.patient_id,))
+
+        if phone_data:
+            phone_numbers = [
+                PatientPhoneNumber.from_tuple(phone)
+                for phone in phone_data
+            ]
+
+            patient.phone_numbers = [p.phone_number for p in phone_numbers]
+        else:
+            patient.phone_numbers = []
+
+        return patient
+
     def delete_patient(self, patient_id):
         query = "DELETE FROM patient WHERE patient_id = %s;"
         self.query_executor.execute(query, (patient_id,))
