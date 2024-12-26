@@ -176,3 +176,35 @@ def user_password_change(staff_id, current_password, new_password):
             return {"success": False, "error": "Error occurred while updating password"}
     except requests.exceptions.RequestException as e:
         return {"success": False, "error": str(e)}
+
+def save_patient(name, nic, age, address, phone_number_1, phone_number_2, registered_by):
+    phone_numbers = []
+    if phone_number_1:
+        phone_numbers.append(phone_number_1.strip())
+    if phone_number_2:
+        phone_numbers.append(phone_number_2.strip())
+
+    current_date = datetime.now().strftime("%Y-%m-%d")
+    try:
+        response = requests.post(
+            'http://127.0.0.1:5002/patient',
+            json={
+                "name": name,
+                "nic": nic,
+                "age": age,
+                "address": address,
+                "phone_numbers": phone_numbers,
+                "registered_by": registered_by,
+                "registered_date": current_date,
+            }
+        )
+        response_data = response.json()
+
+        if response.status_code == 201:
+            return {"success": True, "patient_id": response_data.get('id')}
+        elif 'error' in response_data:
+            return {"success": False, "error": response_data.get('error')}
+        else:
+            return {"success": False, "error": "Error occurred while saving staff"}
+    except requests.exceptions.RequestException as e:
+        return {"success": False, "error": str(e)}

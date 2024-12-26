@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, jsonify, session, redirec
 
 from app.routes.doctor import doctor
 from app.views.views import get_all_staff_roles, get_doctor_specializations, save_staff, get_all_staff, \
-    delete_staff_member, get_staff_by_id, update_staff_by_id
+    delete_staff_member, get_staff_by_id, update_staff_by_id, save_patient
 
 receptionist = Blueprint('receptionist', __name__)
 
@@ -185,16 +185,54 @@ def update_staff():
 
 
 @receptionist.route('/')
-def patient_register():
-    staff_name = session.get('name')
-    if not staff_name:
-        return redirect(url_for('login.index'))
-    return render_template('make_appointment.html', staff_name=staff_name)
-
-
-@receptionist.route('/')
 def view_patients():
     staff_name = session.get('name')
     if not staff_name:
         return redirect(url_for('login.index'))
     return render_template('make_appointment.html', staff_name=staff_name)
+
+
+@receptionist.route('/patient-register')
+def patient_register():
+    staff_name = session.get('name')
+    staff_id = session.get('staff_id')
+    if not staff_name:
+        return redirect(url_for('login.index'))
+    return render_template(
+        'receptionist/patient_registration.html',
+        staff_name=staff_name,
+        staff_id=staff_id
+    )
+
+
+@receptionist.route('/create-patient', methods=['POST'])
+def create_patient():
+    data = request.get_json()
+
+    name = data.get('name')
+    nic = data.get('nic')
+    age = data.get('age')
+    address = data.get('address')
+    phone_number_1 = data.get('phone_number_1')
+    phone_number_2 = data.get('phone_number_2')
+    registered_by = data.get('registered_by')
+
+    try:
+        patient = save_patient(name, nic, age, address, phone_number_1, phone_number_2, registered_by)
+        if patient.get('success'):
+            return jsonify({
+                "success": True,
+                "message": "Patient created successfully.",
+                "patient_id": patient.get('patient_id')
+            }), 201
+        else:
+            return jsonify({
+                "success": False,
+                "message": patient.get('error', 'Failed to create staff')
+            }), 500
+
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "message": str(e)
+        }), 501
