@@ -1,8 +1,5 @@
 import asyncio
-import uuid
-from datetime import datetime
 
-from app.base.model.report import Report
 from app.base.utilities import const
 from app.base.utilities.query_executor import AsyncQueryExecutor
 
@@ -61,6 +58,7 @@ class ReceiptReportModel:
             receipt_id = report[0]
             report_id = report[1]
             status = report[2]
+            notes = report[3]
 
             report_type = report_type_model.get_report_type(report_id)
 
@@ -68,11 +66,28 @@ class ReceiptReportModel:
                 'receipt_id': receipt_id,
                 'report_id': report_id,
                 'status': status,
-                'report_type': report_type[1]
+                'report_type': report_type[1],
+                'notes': notes
             })
 
 
         return receipt_report_data
+
+    def update_receipt_report(self, receipt_id: int, report_id: int, status: str = 'Completed') -> int:
+        """
+        Update receipt report data in the database.
+
+        :param receipt_id: int Id of the receipt
+        :param report_id: int Id of the report
+        :param status: str Status of the report
+        """
+        query: str = f"""
+            UPDATE receipt_reports SET status='{status}' WHERE report_id = {report_id} AND receipt_id = {receipt_id}
+        """
+
+        asyncio.run(self.query_executor.execute(query))
+
+        return 1
 
 
 class ReportTypeModel:

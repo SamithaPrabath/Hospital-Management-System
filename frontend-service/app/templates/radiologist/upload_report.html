@@ -4,28 +4,17 @@
 <div class="content">
     <div class="row">
         <div class="col-lg-8 offset-lg-2">
-            <h4 class="page-title">Upload Medical Report</h4>
+            <h4 class="page-title">Upload Medical Report For {{ report_type }} : {{ receipt_id }} </h4>
         </div>
     </div>
     <div class="row">
         <div class="col-lg-8 offset-lg-2">
-            <form action="{{ url_for('radiologist.go_to_upload_report') }}">
+            <form action="{{ url_for('radiologist.upload_reports', receipt_id=receipt_id, report_id=report_id) }}" method="POST" enctype="multipart/form-data">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Patient NIC</label>
-                            <input id="patient_id" class="form-control" type="text" name="nic">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Doctor</label>
-                            <select  class="form-control custom-select" id="doctor" name="doctor" >
-                                <option value="0" selected>Please Select</option>
-                                <option value="" name="doctor">Doctor</option>
-                            </select>
+                            <label>Upload Scan Image</label>
+                            <input id="scan_image" class="form-control-file" type="file" name="scan_image" accept="image/*">
                         </div>
                     </div>
                 </div>
@@ -34,7 +23,7 @@
                     <textarea cols="30" rows="4" class="form-control" name="description"></textarea>
                 </div>
                 <div class="m-t-20 text-center">
-                    <button type="submit" class="btn btn-primary submit-btn">Create Appointment</button>
+                    <button type="submit" class="btn btn-primary submit-btn">Upload Report</button>
                 </div>
             </form>
         </div>

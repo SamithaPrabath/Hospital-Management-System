@@ -2,7 +2,6 @@ import asyncio
 import uuid
 from datetime import datetime
 
-from app.base.model.report import Report
 from app.base.utilities import const
 from app.base.utilities.query_executor import AsyncQueryExecutor
 
@@ -15,56 +14,66 @@ DB_CONFIG = {
 }
 
 
-class ReportModel:
+class MedicalReportModel:
     def __init__(self):
         self.db_config = DB_CONFIG
         self.query_executor = AsyncQueryExecutor(DB_CONFIG)
 
-    def create_report(self, report_data: dict) -> int:
+    def create_medical_report(self, report_data: dict) -> int:
         """
         Create a new report in the database.
-        :param receipt_data:
+        :param report_data:
         :return:
         """
         today: datetime = datetime.now()
-        total_amount: float = const.FIXED_AMOUNT
-        # Generate a random UUID
-        random_uuid = uuid.uuid4()
 
-        # Convert the UUID to an integer
-        report_id = random_uuid.int % (10**8)
-
-        query: str = (f"INSERT INTO receipt "
-                      f"(receipt_id, patient_id, doctor_id, issued_by, issued_date, total_amount, status_id)) "
-                      f"VALUES ({report_id}, {report_data['patient_id']}, {report_data['doctor_id']}, "
-                      f"{report_data['issued_by']}, '{today}', {total_amount}, 1)")
+        query: str = (f"INSERT INTO medical_report "
+                      f"(report_id, receipt_id, image, description, issued_by, issued_date) "
+                      f"VALUES ({report_data['report_id']}, {report_data['receipt_id']}, '{report_data['image']}', "
+                      f"'{report_data['description']}', {report_data['issued_by']}, '{today}')")
 
         asyncio.run(self.query_executor.execute(query))
 
-        return report_id
+        return 1
 
-    def get_report(self, receipt_id: int) -> dict:
+    def get_medical_report(self, receipt_id: int) -> list:
         """
         Get receipt data from the database.
         :param receipt_id:
         :return:
         """
         query: str = f"""
-            SELECT * FROM receipt WHERE receipt_id = {receipt_id}
+            SELECT * FROM medical_report WHERE receipt_id = {receipt_id}
         """
 
-        receipt_data = asyncio.run(self.query_executor.fetch_one(query))
+        report_data = asyncio.run(self.query_executor.fetch_all(query))
 
-        receipt: Report = Report(
-            receipt_id=receipt_data[0],
-            patient_id=receipt_data[1],
-            doctor_id=receipt_data[2],
-            issued_by=receipt_data[3],
-            issued_date=receipt_data[4],
-            total_amount=receipt_data[5],
-            status=receipt_data[6]
-        )
+        medical_reports = []
+        for receipt in report_data:
+            receipt_data = {
+                'report_id': receipt[0],
+                'receipt_id': receipt[1],
+                'image': receipt[2],
+                'description': receipt[3],
+                'issued_by': receipt[4],
+                'issued_date': receipt[5]
+            }
+            medical_reports.append(receipt_data)
 
-        return receipt.get_receipt_dict()
+        return medical_reports
 
 
+    def delete_medical_report(self, receipt_id: int, report_id: int) -> int:
+        """
+        Delete a report from the database.
+        :param receipt_id:
+        :param report_id:
+        :return:
+        """
+        query: str = f"""
+            DELETE FROM medical_report WHERE receipt_id = {receipt_id} AND report_id = {report_id}
+        """
+
+        asyncio.run(self.query_executor.execute(query))
+
+        return 1

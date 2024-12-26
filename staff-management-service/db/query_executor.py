@@ -12,7 +12,6 @@ class SyncQueryExecutor:
         with conn.cursor() as cursor:
             cursor.execute(query, params)
             conn.commit()
-        conn.close()
 
     def fetch_one(self, query, params=None):
         """Fetch one result from the database."""
@@ -20,7 +19,6 @@ class SyncQueryExecutor:
         with conn.cursor() as cursor:
             cursor.execute(query, params)
             result = cursor.fetchone()
-        conn.close()
         return result
 
     def fetch_all(self, query, params=None):
@@ -29,5 +27,4 @@ class SyncQueryExecutor:
         with conn.cursor() as cursor:
             cursor.execute(query, params)
             result = cursor.fetchall()
-        conn.close()
         return result
