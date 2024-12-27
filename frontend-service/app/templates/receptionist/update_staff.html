@@ -45,7 +45,7 @@
                                    required>
                         </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                         <div class="form-group">
                             <label>Role</label>
                             <select class="form-control select" id="roleSelect" name="role_id" required>
@@ -58,7 +58,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                         <div class="form-group">
                             <label>Specialization</label>
                             <select class="form-control select" id="specializationSelect" name="specialization_id"
@@ -73,6 +73,12 @@
                             </select>
                         </div>
                     </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label>Price</label>
+                            <input class="form-control" type="text" id="price" name="price" value="{{ staff['price'] }}">
+                        </div>
+                    </div>
                     <div class="col-sm-12">
                         <div class="form-group">
                             <label>Address <span class="text-danger">*</span></label>
@@ -84,7 +90,7 @@
                                    required>
                         </div>
                     </div>
-                                        <div class="col-sm-6">
+                    <div class="col-sm-6">
                         <div class="form-group">
                             <label>Phone number 1</label>
                             <input class="form-control" type="text" id="phone_number_1" name="phone_number_1" value="{{ staff['phone_numbers'][0] if staff['phone_numbers']|length > 0 else '' }}">
@@ -131,19 +137,25 @@
     document.addEventListener("DOMContentLoaded", function () {
         const roleSelect = document.getElementById("roleSelect");
         const specializationSelect = document.getElementById("specializationSelect");
+        const priceField = document.getElementById("price");
 
         // Reset specialization on page load
-        specializationSelect.value = "";
+<!--        specializationSelect.value = "";-->
         specializationSelect.disabled = true;
+<!--        priceField.value = "";-->
+        priceField.disabled = true;
 
         roleSelect.addEventListener("change", function () {
             const selectedRole = roleSelect.options[roleSelect.selectedIndex].text.toLowerCase();
 
             if (selectedRole === "doctor") {
                 specializationSelect.disabled = false;
+                priceField.disabled = false;
             } else {
                 specializationSelect.disabled = true;
                 specializationSelect.value = ""; // Clear the selection when disabled
+                priceField.disabled = true;
+                priceField.value = ""; // Clear price field when disabled
             }
         });
     });
