@@ -45,12 +45,12 @@ class StaffController:
             role_query = "SELECT * FROM role WHERE role_id = %s;"
             role_data = self.query_executor.fetch_one(role_query, (data['role_id'],))
 
-            if role_data['name'].lower() == "doctor" and 'specialization_id' in data:
+            if role_data['name'].lower() == "doctor" and 'specialization_id' in data and 'price' in data:
                 doctor_query = """
-                                INSERT INTO doctor (doctor_id, staff_id, specialization_id)
-                                VALUES (%s, %s, %s);
+                                INSERT INTO doctor (doctor_id, staff_id, specialization_id, price)
+                                VALUES (%s, %s, %s, %s);
                             """
-                self.query_executor.execute(doctor_query, (new_staff_id, new_staff_id, data['specialization_id']))
+                self.query_executor.execute(doctor_query, (new_staff_id, new_staff_id, data['specialization_id'], data['price']))
 
             return new_staff_id
 
@@ -81,8 +81,10 @@ class StaffController:
         if doctor_data:
             doctor_data = Doctor.from_tuple(doctor_data)
             staff.specialization_id = doctor_data.specialization_id
+            staff.price = doctor_data.price
         else:
             staff.specialization_id = None
+            staff.price = None
         return staff
 
     def delete_staff(self, staff_id):
@@ -117,11 +119,11 @@ class StaffController:
         role_data = self.query_executor.fetch_one(role_query, (data['role_id'],))
         if role_data['name'].lower() == "doctor":
             doctor_query = """
-                INSERT INTO doctor (doctor_id, staff_id, specialization_id)
-                VALUES (%s, %s, %s)
-                ON DUPLICATE KEY UPDATE specialization_id = VALUES(specialization_id);
+                INSERT INTO doctor (doctor_id, staff_id, price, specialization_id)
+                VALUES (%s, %s, %s, %s)
+                ON DUPLICATE KEY UPDATE specialization_id = VALUES(specialization_id), price = VALUES(price);
             """
-            self.query_executor.execute(doctor_query, (staff_id, staff_id, data['specialization_id']))
+            self.query_executor.execute(doctor_query, (staff_id, staff_id, data['price'], data['specialization_id']))
         else:
             self.query_executor.execute("DELETE FROM doctor WHERE staff_id = %s;", (staff_id,))
 

@@ -208,6 +208,7 @@ def create_staff():
     nic = data.get('nic')
     role_id = data.get('role_id')
     specialization_id = data.get('specialization_id')
+    price = data.get('price')
     address = data.get('address')
     phone_number_1 = data.get('phone_number_1')
     phone_number_2 = data.get('phone_number_2')
@@ -215,7 +216,7 @@ def create_staff():
     password = data.get('password')
 
     try:
-        staff = save_staff(name, nic, role_id, specialization_id, address, phone_number_1, phone_number_2, registered_by, password)
+        staff = save_staff(name, nic, role_id, specialization_id, price, address, phone_number_1, phone_number_2, registered_by, password)
         if staff.get('success'):
             return jsonify({
                 "success": True,
@@ -287,6 +288,7 @@ def update_staff():
     nic = data.get('nic')
     role_id = data.get('role_id')
     specialization_id = data.get('specialization_id')
+    price = data.get('price')
     address = data.get('address')
     phone_number_1 = data.get('phone_number_1')
     phone_number_2 = data.get('phone_number_2')
@@ -294,7 +296,7 @@ def update_staff():
     registered_date = data.get('registered_date')
 
     try:
-        staff = update_staff_by_id(staff_id, name, nic, role_id, specialization_id, address, phone_number_1, phone_number_2, registered_by, registered_date)
+        staff = update_staff_by_id(staff_id, name, nic, role_id, specialization_id, price, address, phone_number_1, phone_number_2, registered_by, registered_date)
         if staff.get('success'):
             return jsonify({
                 "success": True,

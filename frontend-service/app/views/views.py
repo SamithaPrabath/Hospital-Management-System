@@ -46,7 +46,7 @@ def get_doctor_specializations():
     except requests.exceptions.RequestException as e:
         return []
 
-def save_staff(name, nic, role_id, specialization_id, address, phone_number_1, phone_number_2, registered_by, password):
+def save_staff(name, nic, role_id, specialization_id, price, address, phone_number_1, phone_number_2, registered_by, password):
     phone_numbers = []
     if phone_number_1:
         phone_numbers.append(phone_number_1.strip())
@@ -62,6 +62,7 @@ def save_staff(name, nic, role_id, specialization_id, address, phone_number_1, p
                 "nic": nic,
                 "role_id": role_id,
                 "specialization_id": specialization_id,
+                "price": price,
                 "address": address,
                 "registered_by": registered_by,
                 "password": password,
@@ -80,7 +81,7 @@ def save_staff(name, nic, role_id, specialization_id, address, phone_number_1, p
     except requests.exceptions.RequestException as e:
         return {"success": False, "error": str(e)}
 
-def update_staff_by_id(staff_id, name, nic, role_id, specialization_id, address, phone_number_1, phone_number_2, registered_by, registered_date):
+def update_staff_by_id(staff_id, name, nic, role_id, specialization_id, price, address, phone_number_1, phone_number_2, registered_by, registered_date):
     phone_numbers = []
     if phone_number_1:
         phone_numbers.append(phone_number_1.strip())
@@ -95,6 +96,7 @@ def update_staff_by_id(staff_id, name, nic, role_id, specialization_id, address,
                 "nic": nic,
                 "role_id": role_id,
                 "specialization_id": specialization_id,
+                "price": price,
                 "address": address,
                 "registered_by": registered_by,
                 "registered_date": registered_date,

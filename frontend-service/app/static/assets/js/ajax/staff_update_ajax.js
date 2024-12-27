@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const nic = document.getElementById('nic').value;
         const role_id = roleSelect.value;
         const specialization_id = specializationSelect.value;
+        const price = document.getElementById('price').value;
         const address = document.getElementById('address').value;
         const phone_number_1 = document.getElementById('phone_number_1').value;
         const phone_number_2 = document.getElementById('phone_number_2').value;
@@ -24,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        if (roleSelect.options[roleSelect.selectedIndex].text.toLowerCase() === "doctor" && !specialization_id) {
+        if (roleSelect.options[roleSelect.selectedIndex].text.toLowerCase() === "doctor" && !specialization_id && !price) {
             errorMessage.textContent = 'Specialization is required for doctors.';
             errorMessage.style.display = 'block';
             return;
@@ -35,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ staff_id, name, nic, role_id, specialization_id, address, phone_number_1, phone_number_2, registered_by, registered_date })
+                    body: JSON.stringify({ staff_id, name, nic, role_id, specialization_id, price, address, phone_number_1, phone_number_2, registered_by, registered_date })
         })
         .then(updateResponse => updateResponse.json())
         .then(updateData => {
