@@ -32,9 +32,7 @@
 						<span>{{ staff_name }}</span>
                     </a>
 					<div class="dropdown-menu">
-						<a class="dropdown-item" href="profile.html">My Profile</a>
-						<a class="dropdown-item" href="edit-profile.html">Edit Profile</a>
-						<a class="dropdown-item" href="settings.html">Settings</a>
+						<a class="dropdown-item" href="{{ url_for('dashboard.go_to_password_change_page') }}">Change Password</a>
 						<a class="dropdown-item" href="{{ url_for('login.logout') }}">Logout</a>
 					</div>
                 </li>
@@ -44,7 +42,6 @@
             <div class="sidebar-inner slimscroll">
                 <div id="sidebar-menu" class="sidebar-menu">
                     <ul>
-                        <li class="menu-title">Main</li>
                         <li class="active">
                             <a href="{{ url_for('dashboard.index') }}"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a>
                         </li>
@@ -58,6 +55,13 @@
                 {% block content %}{% endblock %}
             </div>
     </div>
+    <!-- Footer -->
+    <div class="bg-dark text-white footer py-5">
+        <div class="col text-center">
+            <p class="h4 mb-0">&copy; 2024 ABC Hospital. All Rights Reserved.</p>
+        </div>
+    </div>
+
 
     <script src="{{ url_for('static', filename='assets/js/jquery-3.2.1.min.js') }}"></script>
 	<script src="{{ url_for('static', filename='assets/js/popper.min.js') }}"></script>

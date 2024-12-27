@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="content">
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <h4 class="page-title">Add Doctor</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <form id="staffForm">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Staff ID <span class="text-danger">*</span></label>
+                            <input class="form-control"
+                                   type="text"
+                                   id="staff_id"
+                                   name="staff_id"
+                                   value="{{ staff['staff_id'] }}"
+                                   disabled
+                            >
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label>Full Name <span class="text-danger">*</span></label>
+                            <input class="form-control"
+                                   type="text"
+                                   id="name"
+                                   name="name"
+                                   value="{{ staff['name'] }}"
+                                   required>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label>NIC <span class="text-danger">*</span></label>
+                            <input class="form-control"
+                                   type="text"
+                                   id="nic"
+                                   name="nic"
+                                   value="{{ staff['nic'] }}"
+                                   required>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label>Role</label>
+                            <select class="form-control select" id="roleSelect" name="role_id" required>
+                                {% for role in staff_roles %}
+                                    <option value="{{ role.role_id }}"
+                                            {% if role.role_id == staff.role_id %}selected{% endif %}>
+                                        {{ role.role_name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label>Specialization</label>
+                            <select class="form-control select" id="specializationSelect" name="specialization_id"
+                                    {% if staff.role_id != 1 %}disabled{% endif %}>
+                                <option value="" {% if not staff.specialization_id %}selected{% endif %}>Select Specialization</option>
+                                {% for doctor_specialization in doctor_specializations %}
+                                    <option value="{{ doctor_specialization.specialization_id }}"
+                                            {% if doctor_specialization.specialization_id == staff.specialization_id %}selected{% endif %}>
+                                        {{ doctor_specialization.type }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label>Price</label>
+                            <input class="form-control" type="text" id="price" name="price" value="{{ staff['price'] }}">
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label>Address <span class="text-danger">*</span></label>
+                            <input class="form-control"
+                                   type="text"
+                                   id="address"
+                                   name="address"
+                                   value="{{ staff['address'] }}"
+                                   required>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Phone number 1</label>
+                            <input class="form-control" type="text" id="phone_number_1" name="phone_number_1" value="{{ staff['phone_numbers'][0] if staff['phone_numbers']|length > 0 else '' }}">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Phone number 2</label>
+                            <input class="form-control" type="text" id="phone_number_2" name="phone_number_2" value="{{ staff['phone_numbers'][1] if staff['phone_numbers']|length > 1 else '' }}">
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label>Registered By <span class="text-danger">*</span></label>
+                            <input class="form-control"
+                                   type="text"
+                                   id="registered_by"
+                                   name="registered_by"
+                                   value="{{ staff['registered_by'] }}"
+                                   readonly>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label>Registered Date <span class="text-danger">*</span></label>
+                            <input class="form-control"
+                                   type="text"
+                                   id="registered_date"
+                                   name="registered_date"
+                                   value="{{ staff_registered_date }}"
+                                   readonly>
+                        </div>
+                    </div>
+                </div>
+                <div id="error-message" class="text-danger" style="display: none;"></div>
+                <div class="m-t-20 text-center">
+            <button type="button" id="submitBtn" class="btn btn-primary submit-btn">Update Staff</button>
+        </div>
+    </form>
+</div>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const roleSelect = document.getElementById("roleSelect");
+        const specializationSelect = document.getElementById("specializationSelect");
+        const priceField = document.getElementById("price");
+
+        // Reset specialization on page load
+<!--        specializationSelect.value = "";-->
+        specializationSelect.disabled = true;
+<!--        priceField.value = "";-->
+        priceField.disabled = true;
+
+        roleSelect.addEventListener("change", function () {
+            const selectedRole = roleSelect.options[roleSelect.selectedIndex].text.toLowerCase();
+
+            if (selectedRole === "doctor") {
+                specializationSelect.disabled = false;
+                priceField.disabled = false;
+            } else {
+                specializationSelect.disabled = true;
+                specializationSelect.value = ""; // Clear the selection when disabled
+                priceField.disabled = true;
+                priceField.value = ""; // Clear price field when disabled
+            }
+        });
+    });
+</script>
+<script src="{{ url_for('static', filename='assets/js/ajax/staff_update_ajax.js') }}"></script>
+{% endblock %}

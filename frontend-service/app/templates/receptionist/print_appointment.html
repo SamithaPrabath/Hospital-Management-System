@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="content">
+    <div class="row">
+        <div class="col-sm-4 col-3">
+            <h4 class="page-title">Print Appointment</h4>
+        </div>
+        <div class="col-sm-8 col-9 text-right m-b-20">
+            <a href="{{ url_for('receptionist.go_to_make_appointment') }}"
+               class="btn btn btn-primary btn-rounded float-right"><i class="fa fa-plus"></i> Make Appointment</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="row">
+                <h4>Receipt ID : {{ receipt_id }}</h4>
+                <div class="col-12">
+                    <a href="{{ url_for('receptionist.download_receipt_pdf', receipt_id=receipt_id) }}" target="_blank">
+                        <button type="button" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#generatePdfModal">Generate PDF</button>
+                    </a>
+                </div>
+        </div>
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-border table-striped custom-table datatable mb-0">
+                    <thead>
+                    <tr>
+                        <th>Appointment ID</th>
+                        <th>Patient Name</th>
+                        <th>Doctor Name</th>
+                        <th>Issued By</th>
+                        <th>Issued Date</th>
+                        <th class="text-center">Status</th>
+                    </tr>
+                    </thead>
+                    <tbody id="staffTableBody">
+                    {% for appointment in appointments %}
+                    <tr>
+                        <td>{{ appointment['receipt_id'] }}</td>
+                        <td>{{ appointment['patient_name'] }}</td>
+                        <td>{{ appointment['doctor_name'] }}</td>
+                        <td>{{ appointment['staff_name'] }}</td>
+                        <td>{{ appointment['appointment_date'] }}</td>
+                        <td class="text-center">{{ appointment['status'] }}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

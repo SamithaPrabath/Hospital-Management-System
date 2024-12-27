@@ -45,12 +45,12 @@ class StaffController:
             role_query = "SELECT * FROM role WHERE role_id = %s;"
             role_data = self.query_executor.fetch_one(role_query, (data['role_id'],))
 
-            if role_data['name'].lower() == "doctor" and 'specialization_id' in data:
+            if role_data['name'].lower() == "doctor" and 'specialization_id' in data and 'price' in data:
                 doctor_query = """
-                                INSERT INTO doctor (doctor_id, staff_id, specialization_id)
-                                VALUES (%s, %s, %s);
+                                INSERT INTO doctor (doctor_id, staff_id, specialization_id, price)
+                                VALUES (%s, %s, %s, %s);
                             """
-                self.query_executor.execute(doctor_query, (new_staff_id, new_staff_id, data['specialization_id']))
+                self.query_executor.execute(doctor_query, (new_staff_id, new_staff_id, data['specialization_id'], data['price']))
 
             return new_staff_id
 
@@ -81,8 +81,10 @@ class StaffController:
         if doctor_data:
             doctor_data = Doctor.from_tuple(doctor_data)
             staff.specialization_id = doctor_data.specialization_id
+            staff.price = doctor_data.price
         else:
             staff.specialization_id = None
+            staff.price = None
         return staff
 
     def delete_staff(self, staff_id):
@@ -117,11 +119,11 @@ class StaffController:
         role_data = self.query_executor.fetch_one(role_query, (data['role_id'],))
         if role_data['name'].lower() == "doctor":
             doctor_query = """
-                INSERT INTO doctor (doctor_id, staff_id, specialization_id)
-                VALUES (%s, %s, %s)
-                ON DUPLICATE KEY UPDATE specialization_id = VALUES(specialization_id);
+                INSERT INTO doctor (doctor_id, staff_id, price, specialization_id)
+                VALUES (%s, %s, %s, %s)
+                ON DUPLICATE KEY UPDATE specialization_id = VALUES(specialization_id), price = VALUES(price);
             """
-            self.query_executor.execute(doctor_query, (staff_id, staff_id, data['specialization_id']))
+            self.query_executor.execute(doctor_query, (staff_id, staff_id, data['price'], data['specialization_id']))
         else:
             self.query_executor.execute("DELETE FROM doctor WHERE staff_id = %s;", (staff_id,))
 
@@ -164,3 +166,61 @@ class StaffController:
             "name": staff_data['name'],
             "role_id": staff_data['role_id']
         }
+
+    def get_all_roles(self):
+        query = "SELECT role_id, name FROM role;"
+        roles = self.query_executor.fetch_all(query)
+
+        if roles:
+            return [{"role_id": role["role_id"], "role_name": role["name"]} for role in roles]
+        else:
+            return []
+
+    def get_all_doctor_specializations(self):
+        query = "SELECT specialization_id, type, description FROM doctor_specialization;"
+        doctor_specialization_list = self.query_executor.fetch_all(query)
+
+        if doctor_specialization_list:
+            return [{"specialization_id": doctor_specialization["specialization_id"], "type": doctor_specialization["type"],
+                     "description": doctor_specialization["description"]} for doctor_specialization in doctor_specialization_list]
+        else:
+            return []
+
+    def get_all_doctors(self):
+        specialization_details = self.get_all_doctor_specializations()
+        query = "SELECT * FROM doctor;"
+        all_doctors = self.query_executor.fetch_all(query)
+
+        doctors = {}
+        for doctor in all_doctors:
+            doctor_details = self.get_staff_by_id(doctor['staff_id'])
+
+            for specialization in specialization_details:
+                if specialization['specialization_id'] == doctor['specialization_id']:
+                    doctors[doctor_details.name] = {
+                        'specialization': specialization['type'],
+                        'id': doctor['staff_id'],
+                    }
+
+        return doctors
+
+
+    def get_all_staff(self):
+        query = "SELECT staff_id, name, nic, role_id, address, registerd_by, registerd_date FROM staff;"
+        all_staff = self.query_executor.fetch_all(query)
+
+        if all_staff:
+            return [
+                {
+                    "staff_id": staff["staff_id"],
+                    "name": staff["name"],
+                    "nic": staff["nic"],
+                    "role_id": staff["role_id"],
+                    "address": staff["address"],
+                    "registered_by": staff["registerd_by"],
+                    "registered_date": staff["registerd_date"]
+                }
+                for staff in all_staff
+            ]
+        else:
+            return []

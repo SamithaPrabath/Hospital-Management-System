@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="content">
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <h4 class="page-title">Add Staff</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <form id="staffForm">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label>Full Name <span class="text-danger">*</span></label>
+                            <input class="form-control" type="text" id="name" name="name" required>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label>NIC <span class="text-danger">*</span></label>
+                            <input class="form-control" type="text" id="nic" name="nic" required>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label>Role</label>
+                            <select class="form-control select" id="roleSelect" name="role_id" required>
+                                {% for role in staff_roles %}
+                                    <option value="{{ role.role_id }}">{{ role.role_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label>Specialization</label>
+                            <select class="form-control select" id="specializationSelect" name="specialization_id" disabled>
+                                <option value="" selected>Select Specialization</option>
+                                {% for doctor_specialization in doctor_specializations %}
+                                    <option value="{{ doctor_specialization.specialization_id }}">{{ doctor_specialization.type }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label>Price</label>
+                            <input class="form-control" type="text" id="price" name="price">
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label>Address <span class="text-danger">*</span></label>
+                            <input class="form-control" type="text" id="address" name="address" required>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Phone number 1</label>
+                            <input class="form-control" type="text" id="phone_number_1" name="phone_number_1">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Phone number 2</label>
+                            <input class="form-control" type="text" id="phone_number_2" name="phone_number_2">
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label>Registered By <span class="text-danger">*</span></label>
+                            <input class="form-control" type="text" id="registered_by" name="registered_by" required value ="{{ staff_id }}" disabled>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Password <span class="text-danger">*</span></label>
+                            <input class="form-control" type="password" id="password" name="password" required>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Confirm Password <span class="text-danger">*</span></label>
+                            <input class="form-control" type="password" id="confirm_password" name="confirm_password" required>
+                        </div>
+                    </div>
+                </div>
+                <div id="error-message" class="text-danger" style="display: none;"></div>
+                <div class="m-t-20 text-center">
+                    <button type="button" id="submitBtn" class="btn btn-primary submit-btn">Create Staff</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const roleSelect = document.getElementById("roleSelect");
+        const specializationSelect = document.getElementById("specializationSelect");
+        const priceField = document.getElementById("price");
+
+        // Reset specialization on page load
+        specializationSelect.value = "";
+        specializationSelect.disabled = true;
+        priceField.value = "";
+        priceField.disabled = true;
+
+        roleSelect.addEventListener("change", function () {
+            const selectedRole = roleSelect.options[roleSelect.selectedIndex].text.toLowerCase();
+
+            if (selectedRole === "doctor") {
+                specializationSelect.disabled = false;
+                priceField.disabled = false;
+            } else {
+                specializationSelect.disabled = true;
+                specializationSelect.value = ""; // Clear the selection when disabled
+                priceField.disabled = true;
+                priceField.value = ""; // Clear price field when disabled
+            }
+        });
+    });
+</script>
+<script src="{{ url_for('static', filename='assets/js/ajax/staff_registration_ajax.js') }}"></script>
+{% endblock %}

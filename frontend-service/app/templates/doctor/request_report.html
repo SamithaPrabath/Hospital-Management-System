@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="content">
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <h4 class="page-title">Request LAB Report</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <form id="reportForm" action="{{ url_for('doctor.submit_request_lab_report') }}" method="POST">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label>Receipt ID <span class="text-danger">*</span></label>
+                            <input class="form-control" type="text" id="receipt_id" name="receipt_id" required>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label>Report <span class="text-danger">*</span></label>
+                            <div>
+                                <label>
+                                    <input type="checkbox" id="report1" name="mri"> MRI Sacn
+                                </label>
+                                <label>
+                                    <input type="checkbox" id="report2" name="ct"> CT Scan
+                                </label>
+                                <label>
+                                    <input type="checkbox" id="report3" name="xray"> XRAY Sacn
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label>Additional Notes</label>
+                            <textarea class="form-control" id="additional_notes" name="doctor_notes" rows="4" placeholder="Enter any additional details here..."></textarea>
+                        </div>
+                    </div>
+                </div>
+                {% if error %}
+                    <div id="error-message" style="color: red; margin-bottom: 10px;">{{ error }}</div>
+                {% endif %}
+                <div class="m-t-20 text-center">
+                    <button type="submit" id="submitBtn" class="btn btn-primary submit-btn">Request LAB report</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

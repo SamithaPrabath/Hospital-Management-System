@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="wrapper">
+    <!-- Main content -->
+    <div class="content">
+        <h3 class="text-center mb-4">Welcome to the Radiologist Dashboard</h3>
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Radiologist Responsibilities</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group">
+                            <li class="list-group-item"><i class="fa fa-check-circle text-success"></i> Check Need LAB reports For Receipt</li>
+                            <li class="list-group-item"><i class="fa fa-check-circle text-success"></i> Create LAB Reports</li>
+                            <li class="list-group-item"><i class="fa fa-check-circle text-success"></i> Print LAB reports</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <!-- Main Content -->
+            <div class="col-md-9 p-4">
+                <!-- Buttons Section -->
+                <div class="d-flex flex-wrap justify-content-start">
+                    <a href="{{ url_for('radiologist.go_to_check_receipt_reports') }}" class="btn btn-primary m-2"><i class="fa fa-plus"></i> Check Receipt LAB Reports</a>
+                    <a href="{{ url_for('radiologist.generate_pdf_report') }}" class="btn btn-primary m-2"><i class="fa fa-eye"></i> Generate PDF report</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
