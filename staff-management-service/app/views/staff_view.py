@@ -33,7 +33,8 @@ def create_staff_blueprint(query_executor):
                     "registered_by": staff.registered_by,
                     "registered_date": staff.registered_date,
                     "phone_numbers": staff.phone_numbers,
-                    "specialization_id": staff.specialization_id
+                    "specialization_id": staff.specialization_id,
+                    "price": staff.price
                 }), 200
             else:
                 return jsonify({"error": "Staff not found"}), 404
