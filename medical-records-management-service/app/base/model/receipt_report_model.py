@@ -92,6 +92,7 @@ class ReceiptReportModel:
         return 1
 
 
+
 class ReportTypeModel:
     """
     This class is used to interact with the database to perform CRUD operations on the report type table

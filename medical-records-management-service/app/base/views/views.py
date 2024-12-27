@@ -69,3 +69,14 @@ def create_receipt_report_view() -> dict:
     report_data: dict = request.json
     receipt_report_controller.create_receipt_report(report_data)
     return {'message': 'Done'}
+
+
+def get_medical_report_with_price_view(receipt_id: int) -> list:
+    """
+    This View Function is use for get medical report data
+
+    :param receipt_id: int
+    :return: dict of medical report data
+    """
+    response: list = medical_report_controller.get_medical_report_with_price(receipt_id)
+    return response

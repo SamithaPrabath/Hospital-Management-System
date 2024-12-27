@@ -72,7 +72,7 @@ def update_receipt_status_view(receipt_id: int, status_id: int) -> dict:
     """
     # get the request data
 
-    response = update_receipt_status(receipt_id, status_id)
+    update_receipt_status(receipt_id, status_id)
     return {'message': 'done'}
 
 
@@ -86,5 +86,5 @@ def update_total_amount_view(receipt_id: int, total_amount: int) -> dict:
     """
     # get the request data
 
-    response = update_total_amount(receipt_id, total_amount)
+    update_total_amount(receipt_id, total_amount)
     return {'message': 'done'}

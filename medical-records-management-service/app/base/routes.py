@@ -48,3 +48,11 @@ base_route.add_url_rule(
     view_func=views.create_receipt_report_view,
     methods=['POST']
 )
+
+
+base_route.add_url_rule(
+    rule='/medical_reports_price/<int:receipt_id>',
+    endpoint='get_medical_report_price',
+    view_func=views.get_medical_report_with_price_view,
+    methods=['GET']
+)

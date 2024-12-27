@@ -61,7 +61,15 @@
                         <td>
                             {% if appointment['status'] != 'Complete' %}
                                 <div class="col-sm-10 col-9 text-right m-b-20">
-                                    <a href="{{ url_for('cashier.go_to_make_payment', receipt_id=appointment['receipt_id']) }}"
+                                    <a href="{{ url_for('cashier.go_to_make_payment',
+                                    receipt_id=appointment['receipt_id'],
+                                    patient_name=appointment['patient_name'],
+                                    doctor_name=appointment['doctor_name'],
+                                    staff_name=appointment['staff_name'],
+                                    appointment_date=appointment['appointment_date'],
+                                    doctor_id=appointment['doctor_id'],
+                                    total_amount=appointment['total_amount']
+                                    ) }}"
                                        class="btn btn btn-primary btn-rounded float-right"><i class="fa fa-plus"></i> Make Payment</a>
                                 </div>
                             {% else %}

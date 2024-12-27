@@ -45,3 +45,18 @@ def delete_medical_report(receipt_id: int, report_id: int) -> int:
     medical_report_model.delete_medical_report(receipt_id, report_id)
 
     return 1
+
+
+def get_medical_report_with_price(receipt_id: int) -> list:
+    """
+    This function is use for get medical report data with price
+
+    :param receipt_id: int
+    :return: dict of medical report data
+    """
+
+    medical_report_model: MedicalReportModel = MedicalReportModel()
+
+    medical_report_data: list = medical_report_model.get_medical_report_with_price(receipt_id)
+
+    return medical_report_data

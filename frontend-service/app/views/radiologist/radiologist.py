@@ -72,3 +72,16 @@ def add_reqeust_report(
     )
 
     return response.json()
+
+
+def get_medical_reports_with_price(
+        receipt_id: int
+):
+
+    response = requests.get(
+        f'http://localhost:5004/medical_reports_price/{receipt_id}'
+    )
+
+    response_data = response.json()
+
+    return response_data

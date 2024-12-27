@@ -2,6 +2,7 @@ import asyncio
 import uuid
 from datetime import datetime
 
+from app.base.model.receipt_report_model import ReportTypeModel
 from app.base.utilities import const
 from app.base.utilities.query_executor import AsyncQueryExecutor
 
@@ -77,3 +78,19 @@ class MedicalReportModel:
         asyncio.run(self.query_executor.execute(query))
 
         return 1
+
+    def get_medical_report_with_price(self, receipt_id: int) -> list:
+        """
+        Get receipt data from the database.
+        :param receipt_id:
+        :return:
+        """
+        reports = self.get_medical_report(receipt_id)
+
+        for report in reports:
+            report_type_model = ReportTypeModel()
+            report_type = report_type_model.get_report_type(report['report_id'])
+            report['price'] = report_type[3]
+            report['type'] = report_type[1]
+
+        return reports

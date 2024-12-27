@@ -73,7 +73,7 @@ class ReceiptModel:
 
         :return:
         """
-        query: str = f"""
+        query: str = """
             SELECT * FROM receipt order by issued_date desc
         """
 
@@ -159,7 +159,6 @@ class ReceiptModel:
 
         return 1
 
-
     def update_total_amount(self, receipt_id: int, amount: float) -> int:
         """
         Update receipt status in the database.
@@ -173,6 +172,7 @@ class ReceiptModel:
             UPDATE receipt SET total_amount = {new_total} WHERE receipt_id = {receipt_id}
         """
 
+        self.query_executor = AsyncQueryExecutor(DB_CONFIG)
         asyncio.run(self.query_executor.execute(query))
 
         return 1

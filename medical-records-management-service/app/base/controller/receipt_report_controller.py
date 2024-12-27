@@ -46,3 +46,5 @@ def create_receipt_report(report_data: dict) -> int:
     receipt_report_model.create_receipt_report(report_data)
 
     return 1
+
+

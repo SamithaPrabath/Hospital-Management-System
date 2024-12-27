@@ -71,7 +71,7 @@ def upload_reports():
     image = request.files['scan_image']
     receipt_id = request.args.get('receipt_id')
     report_id = request.args.get('report_id')
-    price = int(request.args.get('price'))
+    price = int(float(request.args.get('price')))
 
     filename = secure_filename(image.filename)
 
@@ -91,6 +91,7 @@ def upload_reports():
     )
     update_receipt_reports(receipt_id=int(receipt_id), report_id=int(report_id))
     update_total_amount(int(receipt_id), price)
+    update_receipt_status(int(receipt_id), 3)
 
     report_details = get_receipt_reports(int(receipt_id))
 
