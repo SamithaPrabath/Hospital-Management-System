@@ -55,7 +55,7 @@
                             <td>
                                 {% if details['status'] == 'Pending' %}
                                 <div class="col-sm-8 col-9 text-right m-b-20">
-                                    <a href="{{ url_for('radiologist.go_to_upload_report', receipt_id=receipt_id, report_id=details['report_id'], type=details['report_type']) }}" class="btn btn btn-primary btn-rounded float-right">
+                                    <a href="{{ url_for('radiologist.go_to_upload_report', receipt_id=receipt_id, report_id=details['report_id'], type=details['report_type'], price=details['report_price']) }}" class="btn btn btn-primary btn-rounded float-right">
                                         <i class="fa fa-plus"></i> Upload Report
                                     </a>
                                 </div>

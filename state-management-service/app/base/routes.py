@@ -44,3 +44,20 @@ base_route.add_url_rule(
     view_func=views.get_receipt_by_doc_id_view,
     methods=['GET']
 )
+
+# update receipt status
+base_route.add_url_rule(
+    rule='/receipt/<int:receipt_id>/status/<int:status_id>',
+    endpoint='update_receipt_status',
+    view_func=views.update_receipt_status_view,
+    methods=['PUT']
+)
+
+
+# update receipt total amount
+base_route.add_url_rule(
+    rule='/receipt/<int:receipt_id>/total_amount/<int:total_amount>',
+    endpoint='update_total_amount',
+    view_func=views.update_total_amount_view,
+    methods=['PUT']
+)

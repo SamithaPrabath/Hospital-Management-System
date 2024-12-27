@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, jsonify, session, redirec
 
 from app.views.radiologist.radiologist import add_reqeust_report
 from app.views.receptionist.receptionist import get_appointment_status, get_appointments_for_doctor, \
-    get_appointment_by_id
+    get_appointment_by_id, update_receipt_status, update_total_amount
 from app.views.views import get_patient_by_id, get_staff_by_id
 
 doctor = Blueprint('doctor', __name__)
@@ -85,6 +85,10 @@ def submit_request_lab_report():
         get_appointment_by_id(receipt_id)
 
         doctor_notes = request.form.get('doctor_notes')
+        doctor_price = get_staff_by_id(staff_id)['data']['price']
+
+        if doctor_price:
+            update_total_amount(receipt_id, int(doctor_price))
 
         if 'mri' in request.form:
             add_reqeust_report(receipt_id, 1, doctor_notes)
@@ -92,6 +96,8 @@ def submit_request_lab_report():
             add_reqeust_report(receipt_id, 2, doctor_notes)
         if 'xray' in request.form:
             add_reqeust_report(receipt_id, 3, doctor_notes)
+
+        update_receipt_status(receipt_id, 2)
 
         return redirect(url_for('doctor.view_appointments'))
     except Exception as e:

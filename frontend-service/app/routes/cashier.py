@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, jsonify, session, redirect, url_for
 
-from app.views.receptionist.receptionist import get_appointments, get_appointment_status
+from app.views.receptionist.receptionist import get_appointments, get_appointment_status, update_receipt_status
 from app.views.views import get_patient_by_id, get_staff_by_id
 
 cashier = Blueprint('cashier', __name__)
@@ -23,7 +23,34 @@ def go_to_all_receipts():
 
     appointments = []
 
+    activities = [
+        {
+            'activity': 'Appointment Charge',
+            'cost': 1000
+        },
+        {
+            'activity': 'Doctor Fees',
+            'cost': 1500
+        },
+        {
+            'activity': 'CRT Scan',
+            'cost': 3000
+        },
+        {
+            'activity': 'MRI Scan',
+            'cost': 2500
+        },
+        {
+            'activity': 'X-Ray Scan',
+            'cost': 2000
+        }
+    ]
+
     all_appointments = get_appointments()
+
+    total = 0
+    for activity in activities:
+        total += activity.get('cost', 0)
 
     for appointment in all_appointments:
         patient_name = get_patient_by_id(appointment.get('patient_id'))['data']['name']
@@ -36,8 +63,9 @@ def go_to_all_receipts():
             'doctor_name': doctor_name,
             'staff_name': _staff_name,
             'appointment_date': appointment.get('issued_date'),
+            'activities': activities,
             'status': appointment_status,
-            'total_amount': appointment.get('total_amount')
+            'total_amount': total
         }
 
         appointments.append(appointment_data)
@@ -76,10 +104,11 @@ def go_to_make_payment():
             'appointment_date': appointment.get('issued_date'),
             'status': appointment_status,
             'total_amount': appointment.get('total_amount')
+
         }
 
         appointments.append(appointment_data)
-
+    update_receipt_status(receipt_id, 5)
     if receipt_id:
         return redirect(url_for('cashier.index'))
     return render_template(

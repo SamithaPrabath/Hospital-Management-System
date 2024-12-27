@@ -74,3 +74,35 @@ def get_doctor_receipts(doctor_id: int) -> list:
     receipt_data: list = receipt_model.get_doctor_receipts(doctor_id)
 
     return receipt_data
+
+
+def update_receipt_status(receipt_id: int, status_id: int) -> int:
+    """
+    This function is use for update receipt status
+
+    :param receipt_id: int
+    :param status_id: int
+    :return: int
+    """
+
+    receipt_model: ReceiptModel = ReceiptModel()
+
+    receipt_model.update_receipt_status(receipt_id, status_id)
+
+    return receipt_id
+
+
+def update_total_amount(receipt_id: int, total_amount: int) -> int:
+    """
+    This function is use for update receipt status
+
+    :param receipt_id: int
+    :param total_amount: int
+    :return: int
+    """
+
+    receipt_model: ReceiptModel = ReceiptModel()
+
+    receipt_model.update_total_amount(receipt_id, total_amount)
+
+    return receipt_id

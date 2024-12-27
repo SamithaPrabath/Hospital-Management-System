@@ -68,6 +68,7 @@ class ReceiptReportModel:
                 'report_id': report_id,
                 'status': status,
                 'report_type': report_type[1],
+                'report_price': report_type[3],
                 'notes': notes
             })
 

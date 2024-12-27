@@ -49,3 +49,20 @@ def get_appointment_status(status_id: int):
     response = requests.get(f'http://localhost:5003/receipt/status/{status_id}')
     response_data = response.json()
     return response_data
+
+
+def update_receipt_status(receipt_id: int, status_id: int):
+    response = requests.put(
+        f'http://localhost:5003/receipt/{receipt_id}/status/{status_id}'
+    )
+    response_data = response.json()
+    return response_data
+
+
+def update_total_amount(receipt_id: int, total_amount: float):
+    response = requests.put(
+        f'http://localhost:5003/receipt/{receipt_id}/total_amount/{total_amount}'
+    )
+    response_data = response.json()
+    return response_data
+

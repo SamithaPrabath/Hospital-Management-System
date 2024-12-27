@@ -144,3 +144,35 @@ class ReceiptModel:
 
         return receipts
 
+    def update_receipt_status(self, receipt_id: int, status_id: int) -> int:
+        """
+        Update receipt status in the database.
+
+        :param receipt_id: int Id of the receipt
+        :param status_id: int Id of the status
+        """
+        query: str = f"""
+            UPDATE receipt SET status_id = {status_id} WHERE receipt_id = {receipt_id}
+        """
+
+        asyncio.run(self.query_executor.execute(query))
+
+        return 1
+
+
+    def update_total_amount(self, receipt_id: int, amount: float) -> int:
+        """
+        Update receipt status in the database.
+
+        :param receipt_id: int Id of the receipt
+        :param amount: float amount to update
+        """
+        prv_total = self.get_receipt(receipt_id)['total_amount']
+        new_total = prv_total + amount
+        query: str = f"""
+            UPDATE receipt SET total_amount = {new_total} WHERE receipt_id = {receipt_id}
+        """
+
+        asyncio.run(self.query_executor.execute(query))
+
+        return 1

@@ -7,6 +7,7 @@ from werkzeug.utils import secure_filename
 
 from app.views.radiologist.radiologist import get_receipt_reports, create_medical_reports, update_receipt_reports, \
     get_medical_reports
+from app.views.receptionist.receptionist import update_receipt_status, update_total_amount
 from app.views.views import get_staff_by_id
 
 radiologist = Blueprint('radiologist', __name__)
@@ -37,6 +38,7 @@ def go_to_upload_report():
     report_type = request.args.get('type')
     receipt_id = request.args.get('receipt_id')
     report_id = request.args.get('report_id')
+    price = request.args.get('price')
 
     return render_template(
         'radiologist/upload_report.html',
@@ -44,6 +46,7 @@ def go_to_upload_report():
         report_type=report_type,
         receipt_id=receipt_id,
         report_id=report_id,
+        price=price
     )
 
 
@@ -68,6 +71,7 @@ def upload_reports():
     image = request.files['scan_image']
     receipt_id = request.args.get('receipt_id')
     report_id = request.args.get('report_id')
+    price = int(request.args.get('price'))
 
     filename = secure_filename(image.filename)
 
@@ -86,6 +90,7 @@ def upload_reports():
         issued_by=session.get('staff_id')
     )
     update_receipt_reports(receipt_id=int(receipt_id), report_id=int(report_id))
+    update_total_amount(int(receipt_id), price)
 
     report_details = get_receipt_reports(int(receipt_id))
 
@@ -202,6 +207,7 @@ def download_report_pdf():
     response = make_response(pdf)
     response.headers['Content-Type'] = 'application/pdf'
     response.headers['Content-Disposition'] = 'inline; filename=medical_report.pdf'
+    update_receipt_status(receipt_id, 4)
     return response
 
 
@@ -212,6 +218,8 @@ def __get_report_type_and_status(report_id: int, receipt_id: int, receipt_report
         if report['report_id'] == report_id and report['receipt_id'] == receipt_id:
             report_type = report['report_type']
             status = report['status']
+            if status == 'Pending':
+                update_receipt_status(receipt_id, 3)
             break
     return report_type, status
 
