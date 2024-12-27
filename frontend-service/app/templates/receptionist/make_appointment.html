@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="content">
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <h4 class="page-title">Make Appointment</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <form action="{{ url_for('receptionist.submit_appointment') }}" method="POST">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Patient NIC</label>
+                            <input id="patient_id" class="form-control" type="text" name="nic" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Doctor</label>
+                            <select  class="form-control custom-select" id="doctor" name="doctor" required>
+                                <option value="0">Please Select</option>
+                                {% for key,value in doctors_details.items() %}
+                                <option value="{{ value['id'] }}" name="doctor">{{ key }} - {{ value['specialization'] }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                {% if error %}
+                    <div id="error-message" style="color: red; margin-bottom: 10px;">{{ error }}</div>
+                {% endif %}
+
+                <div class="m-t-20 text-center">
+                    <button type="submit" class="btn btn-primary submit-btn">Make Appointment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

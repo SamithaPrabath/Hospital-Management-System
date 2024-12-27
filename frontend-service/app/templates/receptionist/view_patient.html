@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="content">
+    <div class="row">
+        <div class="col-sm-4 col-3">
+            <h4 class="page-title">Patients</h4>
+        </div>
+        <div class="col-sm-8 col-9 text-right m-b-20">
+            <a href="{{ url_for('receptionist.patient_register') }}"
+               class="btn btn btn-primary btn-rounded float-right"><i class="fa fa-plus"></i> Create Patient</a>
+        </div>
+    </div>
+    <div class="row filter-row">
+        <div class="col-12 mb-3">
+            <div class="form-group">
+                <input
+                        type="text"
+                        id="nicSearch"
+                        class="form-control form-control-lg"
+                        placeholder="Enter NIC"
+                >
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-border table-striped custom-table datatable mb-0">
+                    <thead>
+                    <tr>
+                        <th>Patient ID</th>
+                        <th>Name</th>
+                        <th>NIC</th>
+                        <th>Age</th>
+                        <th>Address</th>
+                        <th>Registered By</th>
+                        <th>Registered Date</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody id="patientTableBody">
+                    {% for patient in patient_list %}
+                    <tr>
+                        <td>{{ patient['patient_id'] }}</td>
+                        <td>{{ patient['name'] }}</td>
+                        <td>{{ patient['nic'] }}</td>
+                        <td>{{ patient['age'] }}</td>
+                        <td>{{ patient['address'] }}</td>
+                        <td>{{ patient['registered_by'] }}</td>
+                        <td>{{ patient['registered_date'] }}</td>
+                        <td>
+                            <div class="col-sm-10 col-9 text-right m-b-20">
+                                <a href="{{ url_for('cashier.go_to_update_patient', patient_id=patient['patient_id']) }}"
+                                   class="btn btn btn-primary btn-rounded float-right"><i class="fa fa-plus"></i> Update</a>
+                            </div>
+                            <div class="col-sm-10 col-9 text-right m-b-20">
+                                <button class="btn btn btn-danger btn-rounded float-right delete-btn"
+                                        data-id="{{ patient['patient_id'] }}">
+                                    <i class="fa fa-minus"></i> Delete
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const nicSearch = document.getElementById('nicSearch');
+        const patientTableBody = document.getElementById('patientTableBody');
+
+        nicSearch.addEventListener('input', function () {
+            const searchValue = nicSearch.value.toLowerCase();
+            const rows = patientTableBody.querySelectorAll('tr');
+
+            rows.forEach(row => {
+                const nicCell = row.cells[2]; // NIC is in the third column
+                if (nicCell) {
+                    const nicText = nicCell.textContent.toLowerCase();
+                    if (nicText.includes(searchValue)) {
+                        row.style.display = ''; // Show the row
+                    } else {
+                        row.style.display = 'none'; // Hide the row
+                    }
+                }
+            });
+        });
+    });
+</script>
+<script>
+    document.querySelectorAll('.delete-btn').forEach(button => {
+    button.addEventListener('click', function () {
+        const patientId = this.getAttribute('data-id');
+
+        fetch(`/receptionist/patient-delete/${patientId}`, {
+            method: 'DELETE',
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                location.reload();
+            } else {
+                alert('Error: ' + data.error);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+    });
+</script>
+{% endblock %}

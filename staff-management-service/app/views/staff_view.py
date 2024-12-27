@@ -33,7 +33,8 @@ def create_staff_blueprint(query_executor):
                     "registered_by": staff.registered_by,
                     "registered_date": staff.registered_date,
                     "phone_numbers": staff.phone_numbers,
-                    "specialization_id": staff.specialization_id
+                    "specialization_id": staff.specialization_id,
+                    "price": staff.price
                 }), 200
             else:
                 return jsonify({"error": "Staff not found"}), 404
@@ -99,6 +100,41 @@ def create_staff_blueprint(query_executor):
                 }), 200
             else:
                 return jsonify({"error": result['message']}), 400
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
+    @staff_bp.route('/roles', methods=['GET'])
+    def get_roles():
+        try:
+            roles = staff_controller.get_all_roles()
+            return jsonify(roles), 200
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
+    @staff_bp.route('/doctor-specializations', methods=['GET'])
+    def get_doctor_specializations():
+        try:
+            doctor_specializations = staff_controller.get_all_doctor_specializations()
+            return jsonify(doctor_specializations), 200
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
+    @staff_bp.route('/staff-list', methods=['GET'])
+    def get_all_staff():
+        try:
+            staff_list = staff_controller.get_all_staff()
+            if staff_list:
+                return jsonify(staff_list), 200
+            else:
+                return jsonify({"message": "No staff found"}), 404
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
+    @staff_bp.route('/doctors', methods=['GET'])
+    def get_doctors():
+        try:
+            doctors_details = staff_controller.get_all_doctors()
+            return jsonify(doctors_details), 200
         except Exception as e:
             return jsonify({"error": str(e)}), 500
 
