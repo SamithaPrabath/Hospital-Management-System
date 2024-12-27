@@ -50,7 +50,7 @@ def submit_login():
             return redirect(url_for('dashboard.go_to_doctor_page'))
         elif session['role_id'] == 3:
             return redirect(url_for('dashboard.go_to_radiologist_page'))
-        return redirect(url_for('dashboard.cashier'))
+        return redirect(url_for('dashboard.go_to_cashier_page'))
     else:
         return render_template('login.html', error=result["error"])
 
