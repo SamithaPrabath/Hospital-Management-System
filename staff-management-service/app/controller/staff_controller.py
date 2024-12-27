@@ -184,6 +184,25 @@ class StaffController:
         else:
             return []
 
+    def get_all_doctors(self):
+        specialization_details = self.get_all_doctor_specializations()
+        query = "SELECT * FROM doctor;"
+        all_doctors = self.query_executor.fetch_all(query)
+
+        doctors = {}
+        for doctor in all_doctors:
+            doctor_details = self.get_staff_by_id(doctor['staff_id'])
+
+            for specialization in specialization_details:
+                if specialization['specialization_id'] == doctor['specialization_id']:
+                    doctors[doctor_details.name] = {
+                        'specialization': specialization['type'],
+                        'id': doctor['staff_id'],
+                    }
+
+        return doctors
+
+
     def get_all_staff(self):
         query = "SELECT staff_id, name, nic, role_id, address, registerd_by, registerd_date FROM staff;"
         all_staff = self.query_executor.fetch_all(query)

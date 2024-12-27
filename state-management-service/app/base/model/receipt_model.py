@@ -35,9 +35,9 @@ class ReceiptModel:
         receipt_id = random_uuid.int % (10**8)
 
         query: str = (f"INSERT INTO receipt "
-                      f"(receipt_id, patient_id, doctor_id, issued_by, issued_date, total_amount, status_id)) "
+                      f"(receipt_id, patient_id, doctor_id, issued_by, issued_date, total_amount, status_id) "
                       f"VALUES ({receipt_id}, {receipt_data['patient_id']}, {receipt_data['doctor_id']}, "
-                      f"{receipt_data['issued_by']}, '{today}', {total_amount}, 1)")
+                      f"{receipt_data['staff_id']}, '{today}', {total_amount}, 1)")
 
         asyncio.run(self.query_executor.execute(query))
 
@@ -66,3 +66,54 @@ class ReceiptModel:
         )
 
         return receipt.get_receipt_dict()
+
+    def get_all_receipts(self) -> list:
+        """
+        Get receipt data from the database.
+
+        :return:
+        """
+        query: str = f"""
+            SELECT * FROM receipt order by issued_date desc
+        """
+
+        receipt_data = asyncio.run(self.query_executor.fetch_all(query))
+
+        receipts = []
+
+        for rec in receipt_data:
+            receipt: Receipt = Receipt(
+                receipt_id=rec[0],
+                patient_id=rec[1],
+                doctor_id=rec[2],
+                issued_by=rec[3],
+                issued_date=rec[4],
+                total_amount=rec[5],
+                status=rec[6]
+            )
+            receipts.append(receipt.get_receipt_dict())
+
+        return receipts
+
+
+    def get_status_types(self, status_id: int) -> dict:
+        """
+        This function is use for get receipt status types
+
+        :param status_id: int
+        :return: dict of receipt status types
+        """
+
+        query = f"""
+            SELECT * FROM receipt_status WHERE status_id = {status_id}
+        """
+
+        status_data = asyncio.run(self.query_executor.fetch_one(query))
+
+        status = {
+            'status_id': status_data[0],
+            'status_name': status_data[1]
+        }
+
+        return status
+

@@ -30,3 +30,32 @@ def get_receipt(receipt_id: int) -> dict:
     receipt_data: dict = receipt_model.get_receipt(receipt_id)
 
     return receipt_data
+
+
+def get_all_receipts() -> list:
+    """
+    This function is use for get receipt data
+
+    :return: dict of receipt data
+    """
+
+    receipt_model: ReceiptModel = ReceiptModel()
+
+    receipt_data: list = receipt_model.get_all_receipts()
+
+    return receipt_data
+
+
+def get_status_types(status_id: int) -> dict:
+    """
+    This function is use for get receipt status types
+
+    :param status_id: int
+    :return: dict of receipt status types
+    """
+
+    receipt_model: ReceiptModel = ReceiptModel()
+
+    status_data: dict = receipt_model.get_status_types(status_id)
+
+    return status_data

@@ -21,3 +21,19 @@ base_route.add_url_rule(
     view_func=views.get_receipt_view,
     methods=['GET']
 )
+
+# get a receipt
+base_route.add_url_rule(
+    rule='/receipts',
+    endpoint='get_all_receipt',
+    view_func=views.get_all_receipts_view,
+    methods=['GET']
+)
+
+# get a receipt status types
+base_route.add_url_rule(
+    rule='/receipt/status/<int:status_id>',
+    endpoint='get_status_types',
+    view_func=views.get_status_types_view,
+    methods=['GET']
+)

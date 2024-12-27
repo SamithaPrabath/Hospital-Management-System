@@ -47,7 +47,7 @@ def submit_login():
         if session['role_id'] == 1:
             return redirect(url_for('dashboard.go_to_receptionist_page'))
         elif session['role_id'] == 2:
-            return redirect(url_for('dashboard.doctor'))
+            return redirect(url_for('dashboard.go_to_doctor_page'))
         elif session['role_id'] == 3:
             return redirect(url_for('dashboard.go_to_radiologist_page'))
         return redirect(url_for('dashboard.cashier'))

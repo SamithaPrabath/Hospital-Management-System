@@ -129,4 +129,12 @@ def create_staff_blueprint(query_executor):
         except Exception as e:
             return jsonify({"error": str(e)}), 500
 
+    @staff_bp.route('/doctors', methods=['GET'])
+    def get_doctors():
+        try:
+            doctors_details = staff_controller.get_all_doctors()
+            return jsonify(doctors_details), 200
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
     return staff_bp

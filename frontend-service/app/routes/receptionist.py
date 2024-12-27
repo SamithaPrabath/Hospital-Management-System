@@ -1,10 +1,12 @@
 from crypt import methods
 from datetime import datetime
 
-from flask import Blueprint, render_template, request, jsonify, session, redirect, url_for
+from flask import Blueprint, render_template, request, jsonify, session, redirect, url_for, make_response
+from weasyprint import HTML
 
-from app.routes.doctor import doctor
-from app.views.receptionist.receptionist import create_receipt
+from app.views.receptionist.doctor import get_doctors_details
+from app.views.receptionist.receptionist import create_receipt, get_appointments, get_appointment_status, \
+    get_appointment_by_id
 from app.views.views import get_all_staff_roles, get_doctor_specializations, save_staff, get_all_staff, \
     delete_staff_member, get_staff_by_id, update_staff_by_id, save_patient, get_all_patients, delete_patient_member, \
     get_patient_by_id, update_patient_by_id
@@ -24,32 +26,26 @@ def index():
 def go_to_make_appointment():
     staff_name = session.get('name')
     staff_id = session.get('staff_id')
+    error = request.args.get('error')
 
-    doctors_details = {}
-    # Sample Format
-    doctors_details = {
-        'Sam Doe': {
-            'specialization': 'Cardiologist',
-            'id': 1
-        },
-        'John Doe': {
-            'specialization': 'Denist',
-            'id': 2
-        }
-    }
+    doctors_details = get_doctors_details()
+
     if not staff_name:
         return redirect(url_for('login.index'))
     return render_template(
         'receptionist/make_appointment.html',
         staff_name=staff_name,
         staff_id=staff_id,
-        doctors_details=doctors_details
+        doctors_details=doctors_details,
+        error=error
     )
 
 
 @receptionist.route('/submit_appointment', methods=['POST'])
 def submit_appointment():
     staff_name = session.get('name')
+    if not staff_name:
+        return redirect(url_for('login.index'))
     staff_id = session.get('staff_id')
 
     patient_nic = request.form.get('nic')
@@ -57,22 +53,135 @@ def submit_appointment():
 
     response = create_receipt(patient_nic, doctor_id, staff_id)
 
+    if not response:
+        return redirect(url_for('receptionist.go_to_make_appointment', error='Patient Not Found, Please Register Patient First'))
+    else:
+        receipt_id = int(response.get('id'))
+        appointments = []
+
+        appointment = get_appointment_by_id(receipt_id)
+
+        if appointment:
+            patient_name = get_patient_by_id(appointment.get('patient_id'))['data']['name']
+            doctor_name = get_staff_by_id(appointment.get('doctor_id'))['data']['name']
+            _staff_name = get_staff_by_id(appointment.get('issued_by'))['data']['name']
+            appointment_status = get_appointment_status(int(appointment.get('status')))['status_name']
+            appointment_data = {
+                'receipt_id': appointment.get('receipt_id'),
+                'patient_name': patient_name,
+                'doctor_name': doctor_name,
+                'staff_name': _staff_name,
+                'appointment_date': appointment.get('issued_date'),
+                'status': appointment_status,
+                'total_amount': appointment.get('total_amount')
+            }
+
+            appointments.append(appointment_data)
+
+        return render_template(
+            'receptionist/print_appointment.html',
+            staff_name=staff_name,
+            staff_id=staff_id,
+            receipt_id=receipt_id,
+            appointments=appointments
+        )
+
+
+@receptionist.route('/print_receipt', methods=['GET'])
+def download_receipt_pdf():
+    staff_name = session.get('name')
+    receipt_id = int(request.args.get('receipt_id'))
     if not staff_name:
         return redirect(url_for('login.index'))
-    return render_template(
-        'receptionist/appointments.html',
-        staff_name=staff_name,
-        staff_id=staff_id,
-    )
+
+    appointment = get_appointment_by_id(receipt_id)
+
+    if appointment:
+        patient_name = get_patient_by_id(appointment.get('patient_id'))['data']['name']
+        doctor_name = get_staff_by_id(appointment.get('doctor_id'))['data']['name']
+        _staff_name = get_staff_by_id(appointment.get('issued_by'))['data']['name']
+        appointment_status = get_appointment_status(int(appointment.get('status')))['status_name']
+        appointment_data = {
+            'receipt_id': appointment.get('receipt_id'),
+            'patient_name': patient_name,
+            'doctor_name': doctor_name,
+            'staff_name': _staff_name,
+            'appointment_date': appointment.get('issued_date'),
+            'status': appointment_status,
+            'total_amount': appointment.get('total_amount')
+        }
+
+        context = {
+            'title': f'Appointment For Doctor - {doctor_name}',
+            'description' : 'sample description',
+            'details': appointment_data
+        }
+
+        # Render the HTML template with context
+        html_content = render_template('receptionist/receipt_template.html', **context)
+
+        # Generate PDF from HTML
+        pdf = HTML(string=html_content).write_pdf()
+
+        # Create a response for file download
+        response = make_response(pdf)
+        response.headers['Content-Type'] = 'application/pdf'
+        response.headers['Content-Disposition'] = 'inline; filename=receipt.pdf'
+        return response
 
 
 @receptionist.route('/appointments')
 def view_appointments():
     staff_name = session.get('name')
+    receipt_id = session.get('receipt_id')
+
     if not staff_name:
         return redirect(url_for('login.index'))
-    return render_template('receptionist/appointments.html', staff_name=staff_name)
 
+    appointments = []
+
+    all_appointments = get_appointments()
+
+    for appointment in all_appointments:
+        patient_name = get_patient_by_id(appointment.get('patient_id'))['data']['name']
+        doctor_name = get_staff_by_id(appointment.get('doctor_id'))['data']['name']
+        _staff_name = get_staff_by_id(appointment.get('issued_by'))['data']['name']
+        appointment_status = get_appointment_status(int(appointment.get('status')))['status_name']
+        appointment_data = {
+            'receipt_id': appointment.get('receipt_id'),
+            'patient_name': patient_name,
+            'doctor_name': doctor_name,
+            'staff_name': _staff_name,
+            'appointment_date': appointment.get('issued_date'),
+            'status': appointment_status,
+            'total_amount': appointment.get('total_amount')
+        }
+
+        appointments.append(appointment_data)
+
+    if receipt_id:
+        return redirect(url_for('receptionist.view_appointments_by_filter_id', receipt_id=receipt_id))
+    return render_template(
+        'receptionist/appointments.html',
+        staff_name=staff_name,
+        appointments=appointments
+    )
+
+
+@receptionist.route('/appointments_filter_by_receipt_id')
+def view_appointments_by_filter_id():
+    staff_name = session.get('name')
+    receipt_id = session.get('receipt_id')
+
+    if not staff_name:
+        return redirect(url_for('login.index'))
+
+    if receipt_id:
+        pass
+    return render_template(
+        'receptionist/appointments.html',
+        staff_name=staff_name,
+    )
 
 @receptionist.route('/staff-registration')
 def staff_register():

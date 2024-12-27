@@ -282,3 +282,18 @@ def update_patient_by_id(patient_id, name, nic, age, address, phone_number_1, ph
             return {"success": False, "error": "Error occurred while updating patient"}
     except requests.exceptions.RequestException as e:
         return {"success": False, "error": str(e)}
+
+
+def get_patient_by_nic(nic):
+    try:
+        response = requests.get(
+            f'http://127.0.0.1:5002/patient/get-patient-by-nic/{nic}'
+        )
+        response_data = response.json()
+
+        if response.status_code == 200:
+            return {"success": True, "data": response_data}
+        else:
+            return {"success": False, "error": response_data.get('error', 'Patient not found')}
+    except requests.exceptions.RequestException as e:
+        return {"success": False, "error": str(e)}
