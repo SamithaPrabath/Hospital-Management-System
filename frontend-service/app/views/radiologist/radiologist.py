@@ -54,3 +54,21 @@ def get_medical_reports(
     response_data = response.json()
 
     return response_data
+
+
+def add_reqeust_report(
+        receipt_id: int,
+        report_id: int,
+        doctor_notes: str
+):
+
+    response = requests.post(
+        f'http://localhost:5004/receipt_reports',
+        json={
+            'receipt_id': receipt_id,
+            'report_id': report_id,
+            'doctor_notes': doctor_notes,
+        }
+    )
+
+    return response.json()

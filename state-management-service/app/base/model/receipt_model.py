@@ -95,7 +95,6 @@ class ReceiptModel:
 
         return receipts
 
-
     def get_status_types(self, status_id: int) -> dict:
         """
         This function is use for get receipt status types
@@ -116,4 +115,32 @@ class ReceiptModel:
         }
 
         return status
+
+    def get_doctor_receipts(self, doctor_id: int) -> list:
+        """
+        Get receipt data from the database.
+
+        :return:
+        """
+        query: str = f"""
+            SELECT * FROM receipt WHERE doctor_id = {doctor_id} order by issued_date desc
+        """
+
+        receipt_data = asyncio.run(self.query_executor.fetch_all(query))
+
+        receipts = []
+
+        for rec in receipt_data:
+            receipt: Receipt = Receipt(
+                receipt_id=rec[0],
+                patient_id=rec[1],
+                doctor_id=rec[2],
+                issued_by=rec[3],
+                issued_date=rec[4],
+                total_amount=rec[5],
+                status=rec[6]
+            )
+            receipts.append(receipt.get_receipt_dict())
+
+        return receipts
 

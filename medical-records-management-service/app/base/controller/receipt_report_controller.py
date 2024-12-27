@@ -31,3 +31,18 @@ def update_receipt_report(receipt_id: int, report_id: int, status:str) -> int:
     receipt_report_model.update_receipt_report(receipt_id, report_id, status)
 
     return 1
+
+
+def create_receipt_report(report_data: dict) -> int:
+    """
+    This function is use for create receipt report
+
+    :param report_data: dict
+    :return: int
+    """
+
+    receipt_report_model: ReceiptReportModel = ReceiptReportModel()
+
+    receipt_report_model.create_receipt_report(report_data)
+
+    return 1

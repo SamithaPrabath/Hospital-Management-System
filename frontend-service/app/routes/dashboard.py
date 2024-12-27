@@ -15,7 +15,7 @@ def index():
     if session['role_id'] == 1:
         return redirect(url_for('dashboard.go_to_receptionist_page'))
     elif session['role_id'] == 2:
-        return redirect(url_for('dashboard.doctor'))
+        return redirect(url_for('dashboard.go_to_doctor_page'))
     elif session['role_id'] == 3:
         return redirect(url_for('dashboard.go_to_radiologist_page'))
     return redirect(url_for('dashboard.cashier'))
@@ -24,7 +24,7 @@ def index():
 @dashboard.route('/doctor')
 def go_to_doctor_page():
     staff_name = session.get('name')
-    return render_template('doctor.html', staff_name=staff_name)
+    return render_template('doctor/doctor.html', staff_name=staff_name)
 
 
 @dashboard.route('/receptionist')

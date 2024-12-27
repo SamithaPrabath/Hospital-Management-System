@@ -1,6 +1,7 @@
 from flask import request
 
-from app.base.controller.receipt_controller import create_receipt, get_receipt, get_all_receipts, get_status_types
+from app.base.controller.receipt_controller import create_receipt, get_receipt, get_all_receipts, get_status_types, \
+    get_doctor_receipts
 from app.base.model.receipt import Receipt
 
 
@@ -48,3 +49,14 @@ def get_status_types_view(status_id: int) -> dict:
 
     status_data: dict = get_status_types(status_id)
     return status_data
+
+
+def get_receipt_by_doc_id_view(doctor_id: int) -> list:
+    """
+    This View Function is use for get receipt data
+
+    :return: dict of receipt data
+    """
+
+    receipt_data: list = get_doctor_receipts(doctor_id)
+    return receipt_data

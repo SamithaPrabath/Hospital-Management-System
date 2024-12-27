@@ -58,3 +58,14 @@ def delete_medical_report_view(receipt_id: int, report_id: int) -> str:
     """
     medical_report_controller.delete_medical_report(receipt_id, report_id)
     return 'Done'
+
+
+def create_receipt_report_view() -> dict:
+    """
+    This View Function is use for create receipt report
+
+    :return: str
+    """
+    report_data: dict = request.json
+    receipt_report_controller.create_receipt_report(report_data)
+    return {'message': 'Done'}

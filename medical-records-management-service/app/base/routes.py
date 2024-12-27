@@ -41,3 +41,10 @@ base_route.add_url_rule(
     view_func=views.delete_medical_report_view,
     methods=['DELETE']
 )
+
+base_route.add_url_rule(
+    rule='/receipt_reports',
+    endpoint='add_receipt_report',
+    view_func=views.create_receipt_report_view,
+    methods=['POST']
+)

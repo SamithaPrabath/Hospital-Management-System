@@ -59,3 +59,18 @@ def get_status_types(status_id: int) -> dict:
     status_data: dict = receipt_model.get_status_types(status_id)
 
     return status_data
+
+
+def get_doctor_receipts(doctor_id: int) -> list:
+    """
+    This function is use for get doctor receipt data
+
+    :param doctor_id: int
+    :return: dict of receipt data
+    """
+
+    receipt_model: ReceiptModel = ReceiptModel()
+
+    receipt_data: list = receipt_model.get_doctor_receipts(doctor_id)
+
+    return receipt_data

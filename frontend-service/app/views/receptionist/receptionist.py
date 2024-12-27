@@ -39,6 +39,12 @@ def get_appointment_by_id(appointment_id: int):
     return response_data
 
 
+def get_appointments_for_doctor(doctor_id: int):
+    response = requests.get(f'http://localhost:5003/receipt/doctor/{doctor_id}')
+    response_data = response.json()
+    return response_data
+
+
 def get_appointment_status(status_id: int):
     response = requests.get(f'http://localhost:5003/receipt/status/{status_id}')
     response_data = response.json()

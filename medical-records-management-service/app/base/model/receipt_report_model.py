@@ -28,10 +28,11 @@ class ReceiptReportModel:
         """
         receipt_id: int = report_data['receipt_id']
         report_id: int = report_data['report_id']
+        doctor_notes: str = report_data['doctor_notes']
 
         query: str = (f"INSERT INTO receipt_reports "
-                      f"(receipt_id, report_id) "
-                      f"VALUES ({receipt_id}, {report_id})")
+                      f"(receipt_id, report_id, doctor_notes) "
+                      f"VALUES ({receipt_id}, {report_id}, '{doctor_notes}')")
 
         asyncio.run(self.query_executor.execute(query))
 
